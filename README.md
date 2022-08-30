@@ -1,4 +1,12 @@
-### Alpd
->This is a repository for Arabic automatic license plate detector
+### ALPD
+> Arabic Automatic License Plate Detector
+
+***Dependencies Packages***
+- numpy
+- skimage
+- cv2
+- collections
+- imutils
+- tensorflow
 
 
