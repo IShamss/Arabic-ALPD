@@ -12,12 +12,12 @@ class DetectionCharacter:
     def masking(self,img):
         print("masking func")
 
-    # def GaussianBlur(path):
-    #     image = cv2.imread(path)
-    #     # apply guassian blur on The image
-    #     blurred = cv2.GaussianBlur(image, (5, 5), cv2.BORDER_DEFAULT)
-    #     # display Blurred image
-    #     cv2.imwrite(path, blurred)
-    #     # cv2.waitKey(0)  # waits until a key is pressed
-    #     print("Blurred")
-    #     return path
+    def GaussianBlur(path):
+        image = cv2.imread(path)
+        # apply guassian blur on The image
+        blurred = cv2.GaussianBlur(image, (5, 5), cv2.BORDER_DEFAULT)
+        # display Blurred image
+        cv2.imwrite(path, blurred)
+        # cv2.waitKey(0)  # waits until a key is pressed
+        print("Blurred")
+        return path
