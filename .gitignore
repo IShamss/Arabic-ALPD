@@ -6,6 +6,8 @@ __pycache__/
 recognition/test_images
 recognition/train_bbxs
 recognition/train_images
+recognition/data
+*.pt
 
 # C extensions
 *.so
