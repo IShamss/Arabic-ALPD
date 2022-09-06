@@ -8,6 +8,7 @@ recognition/train_bbxs
 recognition/train_images
 recognition/data
 *.pt
+*.zip
 
 # C extensions
 *.so

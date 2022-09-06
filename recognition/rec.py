@@ -2,8 +2,6 @@
 import torch
 import cv2 as cv
 import torchvision.models as models
-import numpy as np
-from torchvision import datasets
 import torchvision.transforms as transforms
 from PIL import Image
 
@@ -74,13 +72,14 @@ class Recognition:
         "8": 36,
         "9": 37,
         }
-        
         result=[]
         in_transform=transforms.Compose([transforms.Resize(255),
                                     transforms.CenterCrop(224),
                                     transforms.ToTensor(),
                                     transforms.Normalize([0.5],[0.5])])
-        train_data = datasets.ImageFolder('./data',transform=in_transform)
+        character_classes = list(range(0,38))
+        character_classes = list(map(str,character_classes))
+        character_classes.sort()
         for image in images:
             image = in_transform(image)[:3,:,:].unsqueeze(0).float()
             if self.use_cuda:
@@ -91,19 +90,24 @@ class Recognition:
             key_list = list(mappings.keys())
             val_list = list(mappings.values())
             for i in indices[0]:
-                pred_class = int(train_data.classes[i])
+                pred_class = int(character_classes[i])
                 result.append(key_list[val_list.index(pred_class)])
-            plate_number = ' '.join(result)
-            print(plate_number)
+        plate_number = ' '.join(result)
+        print(plate_number)
+        return plate_number
         
     
-    def test_data(self,img_path):     
-        # this is the path of an already cropped image
-        current_img = cv.imread(img_path)
-        image = Image.fromarray(current_img)
-        self.predict_characters([image])
+    def test_data(self,img_paths):     
+        # given a list of cropped images paths, open images and send the list of images
+        # to predict characters
+        images=[]
+        for img_path in img_paths:
+            current_img = cv.imread(img_path)
+            image = Image.fromarray(current_img)
+            images.append(image)
+        self.predict_characters(images)
 
 if __name__=="__main__":
     print("Running")
     rec = Recognition('vgg_model')
-    rec.test_data('./data/15/177.jpg')
+    rec.test_data(['./data/15/177.jpg','./data/2/45.jpg','./data/19/21.jpg','./data/31/23.jpg','./data/36/106.jpg','./data/35/7014.jpg'])
