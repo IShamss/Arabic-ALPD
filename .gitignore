@@ -2,6 +2,13 @@
 __pycache__/
 *.py[cod]
 *$py.class
+*.csv
+recognition/test_images
+recognition/train_bbxs
+recognition/train_images
+recognition/data
+*.pt
+*.zip
 
 # C extensions
 *.so
