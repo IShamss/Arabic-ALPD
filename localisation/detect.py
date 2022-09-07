@@ -133,7 +133,7 @@ def crop_multiple(directory_path):
 
 if __name__ == '__main__':
     try:
-        crop_one("./data/images/20220906_114019.jpg")
-        #crop_multiple("./data/images")
+        crop_one("./data/images/")
+        crop_multiple("./data/images")
     except SystemExit:
         pass

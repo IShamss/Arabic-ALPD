@@ -1,4 +1,4 @@
-name: yolov4-gpu
+name: alpd-gpu
 
 dependencies:
   - python==3.9
