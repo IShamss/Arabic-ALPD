@@ -14,5 +14,6 @@ This code simply applies the image processing function. To illustrate, image pro
 - collections
 - imutils
 - tensorflow
+- matplotlib
 
 
