@@ -1,0 +1,16 @@
+name: alpd-cpu
+
+dependencies:
+  - python==3.9
+  - pip
+  - matplotlib
+  - opencv
+  - pip:
+    - opencv-python
+    - lxml
+    - tqdm
+    - tensorflow
+    - absl-py
+    - easydict
+    - pillow
+    - pytesseract
