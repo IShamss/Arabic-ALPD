@@ -9,7 +9,7 @@ from tensorflow._api.v2.compat.v1 import InteractiveSession
 
 input_size = 416
 padding = 5
-weights='./checkpoints/yolov4-416'
+weights='./localisation/checkpoints/yolov4-416'
 
 def load_model():
     config = ConfigProto()

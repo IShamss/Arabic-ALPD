@@ -18,12 +18,12 @@ from tensorflow._api.v2.compat.v1 import ConfigProto
 from tensorflow._api.v2.compat.v1 import InteractiveSession
 
 flags.DEFINE_string('framework', 'tf', '(tf, tflite, trt')
-flags.DEFINE_string('weights', './checkpoints/yolov4-416',
+flags.DEFINE_string('weights', './localisation/checkpoints/yolov4-416',
                     'path to weights file')
 flags.DEFINE_boolean('tiny', False, 'yolo or yolo-tiny')
 flags.DEFINE_string('model', 'yolov4', 'yolov3 or yolov4')
-flags.DEFINE_list('images', './data/images/car3.jpg', 'path to input image')
-flags.DEFINE_string('output', './detections/', 'path to output folder')
+flags.DEFINE_list('images', './localisation/data/images/car3.jpg', 'path to input image')
+flags.DEFINE_string('output', './localisation/detections/', 'path to output folder')
 flags.DEFINE_boolean('count', False, 'count objects within images')
 flags.DEFINE_boolean('dont_show', False, 'dont show image output')
 flags.DEFINE_boolean('info', False, 'print info on detections')
@@ -31,7 +31,7 @@ flags.DEFINE_boolean('crop', True, 'crop detections from images')
 flags.DEFINE_boolean('ocr', False, 'perform generic OCR on detection regions')
 flags.DEFINE_boolean('plate', False, 'perform license plate recognition')
 
-weights='./checkpoints/yolov4-416'
+weights='./localisation/checkpoints/yolov4-416'
 iou = 0.45
 score = 0.50
 size = 416
@@ -133,7 +133,7 @@ def crop_multiple(directory_path):
 
 if __name__ == '__main__':
     try:
-        crop_one("./data/images/")
-        crop_multiple("./data/images")
+        crop_one("./localisation/data/images/")
+        crop_multiple("./localisation/data/images")
     except SystemExit:
         pass
