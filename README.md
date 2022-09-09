@@ -51,7 +51,7 @@ To install any python library easily, there are few steps than any user should f
   
   Ziad Khaled
   
-  Ziad Sherif
+  Ziad Sherif     zsherif308@gmail.com
 
 *Citation*
 
