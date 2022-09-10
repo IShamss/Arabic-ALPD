@@ -63,14 +63,4 @@ To install any python library easily, there are few steps than any user should f
 
 https://arxiv.org/pdf/2011.14936.pdf
 
-https://udemycourses.me/
-
-https://freelearninglist.org/
-
-https://courseclub.me/?1
-
-https://freecoursesite.com/
-
-https://www.ftuudemy.com/course/
-
-https://www.freecourses.me/
+https://drive.google.com/drive/folders/10RC3qTOzaQeMeJFi7h1up1j4W6zY1oOX
