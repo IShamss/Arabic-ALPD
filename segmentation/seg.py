@@ -8,7 +8,7 @@ class Segmentation:
         self.image = cv.imread(self.imagePath)
         self.listOfContours = []
         self.chars = []
-        print("Segmentation Constructor")
+        # print("Segmentation Constructor")
 
     def blurring(self):
 

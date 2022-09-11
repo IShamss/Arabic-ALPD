@@ -9,4 +9,4 @@ import cv2 as cv
 
 # Main class which responsible for integration of whole image processing piplines
 if __name__ == "__main__":
-print("main")
+    print("main")
