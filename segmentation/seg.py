@@ -27,7 +27,7 @@ class Segmentation:
     def findContours(self, dimensions):
 
         # Find all contours in the image
-        contours, _ = cv.findContours(self.image.copy(), cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+        _,contours, _ = cv.findContours(self.image.copy(), cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
 
         # Retrieve potential dimensions
         lowerWidth = dimensions[0]
