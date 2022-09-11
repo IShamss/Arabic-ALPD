@@ -22,9 +22,9 @@ class Recognition:
             vgg_model = models.vgg19_bn(pretrained=True)
             vgg_model.classifier[6] = torch.nn.Linear(vgg_model.classifier[6].in_features,38)
             if(self.use_cuda):
-                vgg_model.load_state_dict(torch.load('./vgg_model.pt'))
+                vgg_model.load_state_dict(torch.load('./recognition/vgg_model.pt'))
             else:
-                vgg_model.load_state_dict(torch.load('./vgg_model.pt',map_location=torch.device('cpu')))
+                vgg_model.load_state_dict(torch.load('./recognition/vgg_model.pt',map_location=torch.device('cpu')))
             vgg_model.eval()
             self.model = vgg_model
         
@@ -107,7 +107,7 @@ class Recognition:
             images.append(image)
         self.predict_characters(images)
 
-if __name__=="__main__":
-    print("Running")
-    rec = Recognition('vgg_model')
-    rec.test_data(['./data/15/177.jpg','./data/2/45.jpg','./data/19/21.jpg','./data/31/23.jpg','./data/36/106.jpg','./data/35/7014.jpg'])
+# if __name__=="__main__":
+#     print("Running")
+#     rec = Recognition('vgg_model')
+#     rec.test_data(['./data/15/177.jpg','./data/2/45.jpg','./data/19/21.jpg','./data/31/23.jpg','./data/36/106.jpg','./data/35/7014.jpg'])

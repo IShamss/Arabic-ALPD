@@ -56,7 +56,7 @@ if __name__ == '__main__':
             printChars(chars, segObject, countPlate)
             countPlate += 1
         rec = Recognition('vgg_model')
-        rec.test_data(['alpd/outputs/1/1.png', 'alpd/outputs/1/2.png',
-                       'alpd/outputs/1/3.png', 'alpd/outputs/1/4.png', 'alpd/outputs/1/5.png', 'alpd/outputs/1/6.png'])
+        rec.test_data(['./outputs/1/1.png', './outputs/1/2.png',
+                       './outputs/1/3.png', './outputs/1/4.png', './outputs/1/5.png', './outputs/1/6.png'])
     except SystemExit:
         pass
