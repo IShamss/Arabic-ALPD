@@ -22,39 +22,32 @@ def load_model():
 # function for cropping each detection and saving as new image
 def crop_objects(img, data, path, allowed_classes, img_name):
     boxes, scores, classes, num_objects = data
-    print(num_objects)
-    crop_paths = []
+    print(img_name + ":" + str(num_objects))
     if num_objects == 0:
-        return False, crop_paths
+        img_path = os.path.join(str(os.getcwd), "localisation", "data", img_name)
+        return False, img_path
     else:
-        class_names = read_class_names(cfg.YOLO.CLASSES)
+        #class_names = read_class_names(cfg.YOLO.CLASSES)
         #create dictionary to hold count of objects for image name
-        counts = dict()
-        counter = 1
-        for i in range(num_objects):
-            # get count of class for part of image name
-            class_index = int(classes[i])
-            class_name = class_names[class_index]
-            if class_name in allowed_classes:
-                print("detected")
-                counts[class_name] = counts.get(class_name, 0) + 1
-                # get box coords
-                xmin, ymin, xmax, ymax = boxes[i]
-                # crop detection from image (take an additional 5 pixels around all edges)
-                if xmin < padding or xmax > (input_size - padding) or ymin < padding or ymax > (input_size - padding):
-                    cropped_img = img[int(ymin):int(ymax), int(xmin):int(xmax)]
-                else:
-                    cropped_img = img[int(ymin) - padding : int(ymax) + padding, int(xmin) - padding : int(ymax) + padding]
-                # construct image name and join it to path for saving crop properly
-                if counter == 1:
-                    image_name = img_name + '.png'
-                else:
-                    image_name = img_name + "_" + str(counter) + ".png"
-                counter += 1
-                img_path = os.path.join(path, image_name)
-                # save image
-                cv2.imwrite(img_path, cropped_img)
-                crop_paths.append(img_path)
-            else:
-                continue
-        return True, crop_paths
+        #counts = dict()
+        #for i in range(num_objects):
+        # get count of class for part of image name
+        print("detected")
+        # get box coords
+        xmin, ymin, xmax, ymax = boxes[0]
+        # crop detection from image (take an additional 5 pixels around all edges)
+        """if xmin < padding or xmax > (input_size - padding) or ymin < padding or ymax > (input_size - padding):
+            cropped_img = img[int(ymin):int(ymax), int(xmin):int(xmax)]
+        else:
+            cropped_img = img[int(ymin) - padding : int(ymax) + padding, int(xmin) - padding : int(ymax) + padding]"""
+        cropped_img = img[int(ymin):int(ymax), int(xmin):int(xmax)]
+        # construct image name and join it to path for saving crop properly
+        #if counter == 1:
+        image_name = img_name + '.png'
+        # else:
+        #     image_name = img_name + "_" + str(counter) + ".png"
+        #counter += 1
+        img_path = os.path.join(path, image_name)
+        # save image
+        cv2.imwrite(img_path, cropped_img)
+        return True, img_path

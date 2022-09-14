@@ -93,26 +93,31 @@ def detect_and_crop(image_path, saved_model_loaded):
         os.mkdir(crop_path)
     except FileExistsError:
         pass
-    detected, crop_paths = crop_objects(cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB), pred_bbox, crop_path, allowed_classes, image_name)
+    detected, crop_path = crop_objects(cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB), pred_bbox, crop_path, allowed_classes, image_name)
     if detected:
-        return crop_paths
+        return True, crop_path
     else:
         print("No license plate detected")
-        return None
+        return False, crop_path
         
 
 def crop_one(image_path):
     saved_model_loaded = load_model()
-    crop_paths = detect_and_crop(image_path, saved_model_loaded)
-    if crop_paths != None:
-        for crop_path in crop_paths:
-            crop_path = os.path.relpath(crop_path, start = os.curdir)
-            crop_path.replace(os.sep, '/')
+    detected, crop_path = detect_and_crop(image_path, saved_model_loaded)
+    if detected:
+        crop_path = os.path.relpath(crop_path, start = os.curdir)
+        crop_path.replace(os.sep, '/')
         print("Success")
-        return crop_paths
+        return crop_path, []
+    else:
+        image_path = os.path.relpath(crop_path, start = os.curdir)
+        image_path.replace(os.sep, '/')
+        return [], image_path
+
 
 def crop_multiple(directory_path):
     final_crop_paths = [] 
+    not_detected = []
     image_paths = []
     file_paths = os.listdir(directory_path)
     for path in file_paths:
@@ -122,18 +127,22 @@ def crop_multiple(directory_path):
             image_paths.append(path)
     saved_model_loaded = load_model()
     for image in image_paths:
-        crop_paths = detect_and_crop(image, saved_model_loaded)
-        if crop_paths != None:
-            for crop_path in crop_paths:
-                crop_path = os.path.relpath(crop_path, start = os.curdir)
-                crop_path.replace(os.sep, '/')
-                final_crop_paths.append(crop_path)
-    print(final_crop_paths)
+        detected, crop_path = detect_and_crop(image, saved_model_loaded)
+        if detected:
+            crop_path = os.path.relpath(crop_path, start = os.curdir)
+            crop_path.replace(os.sep, '/')
+            final_crop_paths.append(crop_path)
+        else:
+            crop_path = os.path.relpath(crop_path, start = os.curdir)
+            crop_path.replace(os.sep, '/')
+            not_detected.append(crop_path)
+
+    print(not_detected)
     return final_crop_paths
 
 if __name__ == '__main__':
     try:
-        crop_one("./localisation/data/images/")
+        #crop_one("./localisation/data/images/IMG (185).jpeg")
         crop_multiple("./localisation/data/images")
     except SystemExit:
         pass
