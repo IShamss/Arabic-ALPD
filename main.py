@@ -16,7 +16,7 @@ import sys
 path = './outputs/'
 sys.path.insert(0, './localisation')
 import detect as detect
-# from segmentation.seg import Segmentation
+from segmentation.seg import Segmentation
 from absl import app
 
 
@@ -50,21 +50,21 @@ def printChars(chars, segObj, count):
 if __name__ == '__main__':
     try:
         # app.run(main)
-        # countPlate = 1
+        countPlate = 1
         # # predict("./localisation/data/images/IMG_5482.JPEG")
-        # rec = Recognition('vgg_model')
-        # for filename in os.scandir(".\detections"):
-        #     try:
-        #         segObject = Segmentation(filename.path)
-        #         chars = segObject.run()
-        #         printChars(chars, segObject, countPlate)
-        #         countPlate += 1
-        #     except Exception:
-        #         print("error")
-        #         continue
-        # for filename in os.scandir("./outputs/1"):
-        #     rec.test_data([filename.path])
-        endPoint('123ABC')
+        rec = Recognition('vgg_model')
+        for filename in os.scandir(".\detections"):
+            try:
+                segObject = Segmentation(filename.path)
+                chars = segObject.run()
+                printChars(chars, segObject, countPlate)
+                countPlate += 1
+            except Exception:
+                print("error")
+                continue
+        for filename in os.scandir("./outputs/1"):
+            rec.test_data([filename.path])
+        # endPoint('123ABC')
         # rec.test_data(['./outputs/1/1.png', './outputs/1/2.png',
         #            './outputs/1/3.png', './outputs/1/4.png', './outputs/1/5.png', './outputs/1/6.png'])
     except SystemExit:
