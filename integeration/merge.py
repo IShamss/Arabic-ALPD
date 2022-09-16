@@ -1,20 +1,21 @@
 # importing the requests library
 import json
 import requests
+from nose.tools import assert_true
 
 
 def endPoint(plate):
     # the api-endpoint
-    apiEndpoint = "http://pastebin.com/api/api_post.php"
+    apiEndpoint = "https://iic-simple-toolchain-20220912122755303.mybluemix.net/image-processing/plates"
 
     # data to be sent to api
-    body = {"LicensePlate": plate}
+    body = {"plate": plate}
 
     # sending post request and saving response as response object
-    request = requests.post(url=apiEndpoint, data=json.dumps(body))
-
+    request = requests.post(url=apiEndpoint, data=body)
+    assert_true(request.ok)
     if request.status_code == 200:
-        print("The request was a success!")
+        print(request.text)
     elif request.status_code == 404:
         print("Result not found!")
     else:
