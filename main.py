@@ -1,9 +1,13 @@
+import imp
 import os
 from collections import namedtuple
 
 from matplotlib import pyplot as plt
 from recognition.rec import Recognition
-from integeration.merge import endPoint
+from recognition.KNN import classify_unlabelled_directory
+from recognition.KNN import predictChars
+from NewSegmentation.newSeg import segmentChars
+# from integeration.merge import endPoint
 from skimage.filters import threshold_local
 from skimage import segmentation
 from skimage import measure
@@ -29,17 +33,17 @@ from absl import app
 
 # Main class which responsible for integration of whole image processing piplines
 def predict(image_path):
-    crop_path = detect.crop_one(image_path)[0]
+    crop_path = detect.crop_multiple(image_path)[0]
 
 
 # def main(_argv):
 #   predict("./localisation/data/images/IMG_5351.JPEG")
 
 
-def printChars(chars, segObj, count):
+def printChars(chars, count):
     if not os.path.isdir(f'{path}{count}'):
         os.makedirs(f'{path}{count}')
-    for i in range(len(segObj.listOfContours)):
+    for i in range(len(chars)):
         plt.subplot(1, 10, i + 1)
         plt.imshow(chars[i], cmap='gray')
         cv.imwrite(f'{path}{count}/{i + 1}.png', chars[i])
@@ -49,23 +53,20 @@ def printChars(chars, segObj, count):
 
 if __name__ == '__main__':
     try:
-        # app.run(main)
         countPlate = 1
-        # # predict("./localisation/data/images/IMG_5482.JPEG")
-        rec = Recognition('vgg_model')
-        for filename in os.scandir(".\detections"):
+        predict("./localisation/data/facebook/")
+        for filename in os.scandir("./detections/"):
             try:
-                segObject = Segmentation(filename.path)
-                chars = segObject.run()
-                printChars(chars, segObject, countPlate)
+                # segObject = Segmentation(filename.path)
+                # chars = segObject.run()
+                _, chars = segmentChars(filename.path)
+                printChars(chars, countPlate)
+                predicted_chars = classify_unlabelled_directory(f'{path}{countPlate}/')
+                print(predictChars(predicted_chars))
                 countPlate += 1
             except Exception:
-                print("error")
+                # print("error")
                 continue
-        for filename in os.scandir("./outputs/1"):
-            rec.test_data([filename.path])
-        # endPoint('123ABC')
-        # rec.test_data(['./outputs/1/1.png', './outputs/1/2.png',
-        #            './outputs/1/3.png', './outputs/1/4.png', './outputs/1/5.png', './outputs/1/6.png'])
+
     except SystemExit:
         pass

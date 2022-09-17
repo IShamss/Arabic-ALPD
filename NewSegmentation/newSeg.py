@@ -72,8 +72,8 @@ def segmentChars(filename):
         imageResult.append(charCopy)
     indices = sorted(range(len(listOfContours)), key=lambda k: listOfContours[k])
     imageResultCopy = []
-    print(len(imageResult))
-    print(len(indices))
+    # print(len(imageResult))
+    # print(len(indices))
     for index in indices:
         if index < len(imageResult):
             imageResultCopy.append(imageResult[index])  # stores character images according to their index
