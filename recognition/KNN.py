@@ -144,7 +144,7 @@ def load_pickle() -> dict:
 
 
 #Computes the dot distance between arrays of training and testing data and returns the distance where rows correspond to test images and columns correspond to train images, very quick
-def dot_distance(training, testing):
+def cosine_distance(training, testing):
     tdott = np.dot(testing, training.transpose())
     modtrain = np.sqrt(np.sum(training * training, axis=1))
     modtest = np.sqrt(np.sum(testing * testing, axis=1))
@@ -176,7 +176,7 @@ def classify(train_model: dict, test_fvectors, k, distance) -> List[str]:
 
     #Compute distance
     if distance == 0:
-        dist = dot_distance(train, test_fvectors)
+        dist = cosinegit_distance(train, test_fvectors)
     else:
         dist = euclidean_distance(train, test_fvectors)
 
