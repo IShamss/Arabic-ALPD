@@ -78,7 +78,7 @@ def segmentChars(filename):
         if index < len(imageResult):
             imageResultCopy.append(imageResult[index])  # stores character images according to their index
     imageResult = np.array(imageResultCopy)
-    cv2.imshow("Character's Segmented", im2)
+    # cv2.imshow("Character's Segmented", im2)
     return len(indices), imageResult
     # imageResultCopy.clear()
     # print(len(listOfContours))

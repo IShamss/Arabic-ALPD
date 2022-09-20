@@ -97,7 +97,7 @@ def detect_and_crop(image_path, saved_model_loaded):
     if detected:
         return True, crop_path
     else:
-        print("No license plate detected")
+        # print("No license plate detected")
         return False, crop_path
         
 
@@ -137,7 +137,7 @@ def crop_multiple(directory_path):
             crop_path.replace(os.sep, '/')
             not_detected.append(crop_path)
 
-    print(not_detected)
+    #print(not_detected)
     return final_crop_paths
 
 if __name__ == '__main__':

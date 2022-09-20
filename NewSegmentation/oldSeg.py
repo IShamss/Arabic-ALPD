@@ -44,7 +44,7 @@ class Segmentation:
         for contour in contours:
             # detects contour in binary image and returns the coordinates of surrounding rectangle
             intX, intY, intWidth, intHeight = cv.boundingRect(contour)
-            print(intX)
+            # print(intX)
             # checking the dimensions of the contour to filter characters by contour's size
             if intWidth > lowerWidth and intWidth < upperWidth and intHeight > lowerHeight and intHeight < upperHeight:
                 self.listOfContours.append(
