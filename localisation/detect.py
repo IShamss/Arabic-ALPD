@@ -81,7 +81,13 @@ def detect_and_crop(image_path, saved_model_loaded):
         if bbox[0] != 0 and bbox[1] != 0 and bbox[2] != 0 and bbox[3] != 0:
             cv2.rectangle(original_image_clrs, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), (0, 255, 0), 2) 
 
-    img_path = "./green_boxes" + "/" + image_name_ext
+    img_path = "./green_boxes"
+    try:
+        os.mkdir(img_path)
+    except FileExistsError:
+        pass
+
+    img_path = img_path + "/" + image_name_ext
     cv2.imwrite(img_path, original_image_clrs)
 
     # hold all detection data in one variable
