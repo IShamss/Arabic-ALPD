@@ -30,7 +30,7 @@ from absl import app
 
 def predict(image_path):
     # crop_path = detect.crop_multiple(image_path)[0]
-    detect.crop_one(image_path)[0]
+    detect.crop_one(image_path, detect_multiple=False)[0]
 
 
 def printChars(chars, count):
@@ -53,7 +53,7 @@ if __name__ == '__main__':
             # stream(url)
 
             # localization
-            detect.crop_multiple("./localisation/data/demo/")[0]
+            detect.crop_multiple("./localisation/data/demo/", detect_multiple=False)[0]
 
             for filename in os.scandir("./detections/"):
                 try:

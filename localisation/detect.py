@@ -37,7 +37,7 @@ score = 0.50
 size = 416
 image_extensions = (".jpg", ".JPG", ".png", ".PNG", ".jpeg", ".JPEG")
 
-def detect_and_crop(image_path, saved_model_loaded):
+def detect_and_crop(image_path, saved_model_loaded, detect_multiple):
 
     # loop through images in list and run Yolov4 model on each
     original_image_clrs = cv2.imread(image_path)
@@ -105,7 +105,8 @@ def detect_and_crop(image_path, saved_model_loaded):
         os.mkdir(crop_path)
     except FileExistsError:
         pass
-    detected, crop_path = crop_objects(cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB), pred_bbox, crop_path, allowed_classes, image_name)
+    detected, crop_path = crop_objects(cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB), pred_bbox, crop_path, 
+                                                            allowed_classes, image_name, detect_multiple=False)
     if detected:
         return True, crop_path
     else:
@@ -113,9 +114,9 @@ def detect_and_crop(image_path, saved_model_loaded):
         return False, crop_path
         
 
-def crop_one(image_path):
+def crop_one(image_path, detect_multiple):
     saved_model_loaded = load_model()
-    detected, crop_path = detect_and_crop(image_path, saved_model_loaded)
+    detected, crop_path = detect_and_crop(image_path, saved_model_loaded, detect_multiple)
     if detected:
         crop_path = os.path.relpath(crop_path, start = os.curdir)
         crop_path.replace(os.sep, '/')
@@ -127,7 +128,7 @@ def crop_one(image_path):
         return [], image_path
 
 
-def crop_multiple(directory_path):
+def crop_multiple(directory_path, detect_multiple):
     final_crop_paths = [] 
     not_detected = []
     image_paths = []
@@ -139,7 +140,7 @@ def crop_multiple(directory_path):
             image_paths.append(path)
     saved_model_loaded = load_model()
     for image in image_paths:
-        detected, crop_path = detect_and_crop(image, saved_model_loaded)
+        detected, crop_path = detect_and_crop(image, saved_model_loaded, detect_multiple)
         if detected:
             crop_path = os.path.relpath(crop_path, start = os.curdir)
             crop_path.replace(os.sep, '/')
