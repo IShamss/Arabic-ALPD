@@ -1,3 +1,4 @@
+import glob
 import imp
 import os
 
@@ -20,7 +21,7 @@ import cv2 as cv
 import sys
 
 path = './outputs/'
-url = "http://192.168.1.103:8080/video"
+url = "http://192.168.98.146:8080/video"
 sys.path.insert(0, './localisation')
 import detect as detect
 # from segmentation.seg import Segmentation
@@ -46,40 +47,47 @@ def printChars(chars, count):
 
 # Main  which responsible for integration of whole image processing pipelines
 if __name__ == '__main__':
-    try:
-        countPlate = 1
-        # stream(url)
+    while True:
+        try:
+            countPlate = 1
+            # stream(url)
 
-        # localization
-        detect.crop_multiple("./localisation/data/demo")[0]
+            # localization
+            detect.crop_multiple("./localisation/data/demo/")[0]
 
-        for filename in os.scandir("./detections/"):
-            try:
-                # segmentation
-                _, chars = segmentChars(filename.path)
+            for filename in os.scandir("./detections/"):
+                try:
+                    # segmentation
+                    _, chars = segmentChars(filename.path)
 
-                # print chars segmented
-                printChars(chars, countPlate)
+                    # print chars segmented
+                    printChars(chars, countPlate)
 
-                # recognition
-                predicted_chars = classify_unlabelled_directory(f'{path}{countPlate}/')
+                    # recognition
+                    predicted_chars = classify_unlabelled_directory(f'{path}{countPlate}/')
 
-                # print string
-                lp = predictChars(predicted_chars)
-                print(lp)
+                    # print string
+                    lp = predictChars(predicted_chars)
+                    print(lp)
 
-                os.rmdir(f'./outputs/{countPlate}')
-                countPlate += 1
+                    # countPlate += 1
 
-                # send string to middle-ware
-                endPoint(lp)
+                    # send string to middle-ware
+                    # endPoint(lp)
+                    # files = glob.glob('./detections/*')
+                    # for file in files:
+                    #     os.remove(file)
+                    # files = glob.glob('./outputs/*')
+                    # for file in files:
+                    #     os.remove(file)
 
-            except Exception:
-                # print("error")
-                continue
+                except Exception:
+                    # print("error")
+                    continue
 
-    except SystemExit:
-        pass
+        except Exception:
+            print("outer error")
+            continue
 
 # segObject = Segmentation(filename.path)
 # chars = segObject.run()
