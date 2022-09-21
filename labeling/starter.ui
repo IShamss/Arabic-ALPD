@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1000</width>
+    <height>750</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1000</width>
+    <height>750</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
@@ -17,10 +23,10 @@
    <widget class="QPushButton" name="startButton">
     <property name="geometry">
      <rect>
-      <x>335</x>
-      <y>36</y>
-      <width>81</width>
-      <height>31</height>
+      <x>610</x>
+      <y>30</y>
+      <width>111</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="text">
@@ -58,7 +64,7 @@
      <rect>
       <x>150</x>
       <y>20</y>
-      <width>121</width>
+      <width>251</width>
       <height>31</height>
      </rect>
     </property>
@@ -68,48 +74,16 @@
      <rect>
       <x>150</x>
       <y>60</y>
-      <width>121</width>
+      <width>251</width>
       <height>31</height>
      </rect>
-    </property>
-   </widget>
-   <widget class="QFrame" name="mainImageFrame">
-    <property name="geometry">
-     <rect>
-      <x>120</x>
-      <y>90</y>
-      <width>231</width>
-      <height>141</height>
-     </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
-    </property>
-   </widget>
-   <widget class="QFrame" name="plateFrame">
-    <property name="geometry">
-     <rect>
-      <x>180</x>
-      <y>240</y>
-      <width>101</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
     </property>
    </widget>
    <widget class="QPushButton" name="skipButton">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>410</y>
+      <x>220</x>
+      <y>510</y>
       <width>81</width>
       <height>41</height>
      </rect>
@@ -121,8 +95,8 @@
    <widget class="QPushButton" name="saveButton">
     <property name="geometry">
      <rect>
-      <x>205</x>
-      <y>406</y>
+      <x>540</x>
+      <y>510</y>
       <width>81</width>
       <height>41</height>
      </rect>
@@ -131,13 +105,26 @@
      <string>Save</string>
     </property>
    </widget>
+   <widget class="QLabel" name="mainImage">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>100</y>
+      <width>421</width>
+      <height>291</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>1000</width>
      <height>18</height>
     </rect>
    </property>
