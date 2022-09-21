@@ -37,19 +37,18 @@ score = 0.50
 size = 416
 image_extensions = (".jpg", ".JPG", ".png", ".PNG", ".jpeg", ".JPEG")
 
-def detect_and_crop(image_path, saved_model_loaded):
+def detect_and_crop(image_path, saved_model_loaded, detect_multiple):
 
     # loop through images in list and run Yolov4 model on each
-    original_image = cv2.imread(image_path)
-    original_image = cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB)
+    original_image_clrs = cv2.imread(image_path)
+    original_image = cv2.cvtColor(original_image_clrs, cv2.COLOR_BGR2RGB)
 
     image_data = cv2.resize(original_image, (size, size))
     image_data = image_data / 255.
     
     # get image name by using split method
-    image_name_with_extension = image_path.split('/')[-1]
-
-    image_name = image_name_with_extension.split('.')[0]
+    image_name_ext = image_path.split('/')[-1]
+    image_name = image_name_ext.split('.')[0]
 
     images_data = []
     for i in range(1):
@@ -77,7 +76,20 @@ def detect_and_crop(image_path, saved_model_loaded):
     # format bounding boxes from normalized ymin, xmin, ymax, xmax ---> xmin, ymin, xmax, ymax
     original_h, original_w, _ = original_image.shape
     bboxes = utils.format_boxes(boxes.numpy()[0], original_h, original_w)
-    
+
+    for bbox in bboxes:
+        if bbox[0] != 0 and bbox[1] != 0 and bbox[2] != 0 and bbox[3] != 0:
+            cv2.rectangle(original_image_clrs, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), (0, 255, 0), 2) 
+
+    img_path = "./green_boxes"
+    try:
+        os.mkdir(img_path)
+    except FileExistsError:
+        pass
+
+    img_path = img_path + "/" + image_name_ext
+    cv2.imwrite(img_path, original_image_clrs)
+
     # hold all detection data in one variable
     pred_bbox = [bboxes, scores.numpy()[0], classes.numpy()[0], valid_detections.numpy()[0]]
 
@@ -93,7 +105,8 @@ def detect_and_crop(image_path, saved_model_loaded):
         os.mkdir(crop_path)
     except FileExistsError:
         pass
-    detected, crop_path = crop_objects(cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB), pred_bbox, crop_path, allowed_classes, image_name)
+    detected, crop_path = crop_objects(cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB), pred_bbox, crop_path, 
+                                                            allowed_classes, image_name, detect_multiple=False)
     if detected:
         return True, crop_path
     else:
@@ -101,9 +114,9 @@ def detect_and_crop(image_path, saved_model_loaded):
         return False, crop_path
         
 
-def crop_one(image_path):
+def crop_one(image_path, detect_multiple):
     saved_model_loaded = load_model()
-    detected, crop_path = detect_and_crop(image_path, saved_model_loaded)
+    detected, crop_path = detect_and_crop(image_path, saved_model_loaded, detect_multiple)
     if detected:
         crop_path = os.path.relpath(crop_path, start = os.curdir)
         crop_path.replace(os.sep, '/')
@@ -115,7 +128,7 @@ def crop_one(image_path):
         return [], image_path
 
 
-def crop_multiple(directory_path):
+def crop_multiple(directory_path, detect_multiple):
     final_crop_paths = [] 
     not_detected = []
     image_paths = []
@@ -127,7 +140,7 @@ def crop_multiple(directory_path):
             image_paths.append(path)
     saved_model_loaded = load_model()
     for image in image_paths:
-        detected, crop_path = detect_and_crop(image, saved_model_loaded)
+        detected, crop_path = detect_and_crop(image, saved_model_loaded, detect_multiple)
         if detected:
             crop_path = os.path.relpath(crop_path, start = os.curdir)
             crop_path.replace(os.sep, '/')
