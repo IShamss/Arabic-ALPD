@@ -2,7 +2,6 @@ from PyQt5 import QtWidgets, uic, QtGui,QtCore
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QWidget, QDialog, QMainWindow, QPushButton, QFrame,QTextEdit,QLabel,QGridLayout
 import sys
-from PIL.ImageQt import ImageQt
 from PIL import Image
 # from detect import crop_one
 sys.path.insert(0,'./localisation')
@@ -10,6 +9,7 @@ import detect as detect
 from NewSegmentation.newSeg import segmentChars
 from  recognition.KNN import predictChars , classify_unlabelled_directory
 import os
+import numpy as np
 
 btn_pushed = False
 class UI(QMainWindow):
@@ -32,18 +32,11 @@ class UI(QMainWindow):
         # self.minVal = self.findChild(QLineEdit, "Min")
         self.main_img = self.findChild(QLabel,"mainImage")
         self.plate_img = self.findChild(QLabel,"plateImg")
-        # self.maxVal = self.findChild(QLineEdit, "Max")
-        # Show Window
-        # self.im = QPixmap("./img.jpg")
-        # self.label = QLabel()
-        # self.label.setPixmap(self.im)
-
-        # self.grid = QGridLayout()
-        # self.grid.addWidget(self.label,1,1)
-        # self.setLayout(self.grid)
-
-        # self.setGeometry(50,50,320,200)
-        # self.setWindowTitle("PyQT show image")
+        self.segmented_chars=[]
+        self.textbox_values=[]
+        for i in range(1,8):
+            self.segmented_chars.append(self.findChild(QLabel,f"seg{i}"))
+            self.textbox_values.append(self.findChild(QTextEdit,f"val{i}"))
         self.show()
 
     def Run(self):
@@ -57,25 +50,26 @@ class UI(QMainWindow):
             btn_pushed=False
             self.main_img.setScaledContents(True)
             self.main_img.setPixmap(QtGui.QPixmap(img.path))
-            # crop_path,_ =detect.crop_one(img.path)
             self.plate_img.setScaledContents(True)
             self.plate_img.setPixmap(QtGui.QPixmap("./"+plate_path))
             _,chars = segmentChars(plate_path)
             for idx,char in enumerate(chars):
-                new_label = QLabel()
-                new_label.setScaledContents(True)
-                # img = ImageQt(char)
-                img=Image.fromarray(char,mode='RGB')
-                img=ImageQt(char)
-                new_label.setPixmap(QtGui.QPixmap.fromImage(img))
-                new_label.move(10,10+idx*2)
+                self.segmented_chars[idx].setScaledContents(True)
+                img=Image.fromarray(char).convert('RGB')
+                img = np.array(img) 
+                # Convert RGB to BGR 
+                img = img[:, :, ::-1].copy() 
+                image = QtGui.QImage(img, img.shape[1],img.shape[0], img.shape[1] * 3, QtGui.QImage.Format_BGR888)
+                pix = QtGui.QPixmap(image)
+                self.segmented_chars[idx].setPixmap(QtGui.QPixmap(pix))
 
             while(not btn_pushed):
                 QtCore.QCoreApplication.processEvents()
         
 
 
-        
+    def clean(self):
+        pass
 
     
     def saveImg(self):
