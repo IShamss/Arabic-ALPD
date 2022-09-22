@@ -43,8 +43,7 @@ def open_images(image_paths):
 
 
 #Takes a list of image np.arrays and turns them into a large feature vector array where rows correnspond to images and columns correspond to features (pixels) of the image
-def images_to_feature_vectors(image_paths):
-    images = open_images(image_paths)
+def images_to_feature_vectors(images):
     h, w = images[0].shape
     n_features = h * w
     fvectors = np.empty((len(images), n_features))
@@ -83,6 +82,7 @@ def label_data(directory):
     for i in range(len(subdirectory_names)):
         images = os.listdir(subdirectory_paths[i])
         images = [subdirectory_paths[i] + "/" + image for image in images]
+        images = open_images(images)
         data_fv = images_to_feature_vectors(images)
         for fv in data_fv:
             data_fvectors.append(fv)
@@ -109,10 +109,12 @@ def split_train_test(directory):
         shuffle(images)
         images = [subdirectory_paths[i] + "/" + image for image in images]
         train, test = split_two(images)
+        train = open_images(train)
         train_fv = images_to_feature_vectors(train)
         for fv in train_fv:
             train_fvectors.append(fv)
             train_labels.append(subdirectory_names[i])
+        test = open_images(test)
         test_fv = images_to_feature_vectors(test)
         for fv in test_fv:
             test_fvectors.append(fv)
@@ -260,11 +262,18 @@ save_model(combined_directory)
 #Takes the directory path of the images we want to classify and returns the corresponding labels
 def classify_unlabelled_directory(segmented_image_directory):
     image_paths, _ = open_dic(segmented_image_directory)
-    image_fvectors = images_to_feature_vectors(image_paths)
+    image_arrays = open_images(image_paths)
+    image_fvectors = images_to_feature_vectors(image_arrays)
     train_model = load_pickle()
     labels = classify(train_model, image_fvectors, 3, 0)
     return labels
 
+
+def classify_image_arrays(image_arrays):
+    image_fv = images_to_feature_vectors(image_arrays)
+    train_model = load_pickle()
+    labels = classify(train_model, image_fv, 3, 0)
+    return labels
 
 
 
@@ -303,6 +312,7 @@ def predictChars(listOfChars):
     for char in listOfChars:
         finalChar.append(mappings[char])
     return " ".join(list(reversed(finalChar)))
+
 
 # save_model(combined_directory)
 # print("dsadas")
