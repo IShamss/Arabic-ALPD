@@ -1,31 +1,19 @@
-import glob
-import imp
 import os
+import sys
 
+# from integeration.merge import endPoint
+import cv2 as cv
 from matplotlib import pyplot as plt
-from recognition.rec import Recognition
+
+from NewSegmentation.newSeg import segmentChars
 from recognition.KNN import classify_unlabelled_directory
 from recognition.KNN import predictChars
-from NewSegmentation.newSeg import segmentChars
-from integeration.client import endPoint
-from testing.webcam import stream
-from NewSegmentation.oldSeg import Segmentation
-# from integeration.merge import endPoint
-from skimage.filters import threshold_local
-from skimage import segmentation
-from skimage import measure
-from imutils import perspective
-import numpy as np
-import imutils
-import cv2 as cv
-import sys
 
 path = './outputs/'
 url = "http://192.168.98.146:8080/video"
 sys.path.insert(0, './localisation')
 import detect as detect
 # from segmentation.seg import Segmentation
-from absl import app
 
 
 def predict(image_path):
@@ -53,7 +41,7 @@ if __name__ == '__main__':
             # stream(url)
 
             # localization
-            detect.crop_multiple("./localisation/data/demo/", detect_multiple=False)[0]
+            detect.crop_multiple("./localisation/data/demo/", False)
 
             for filename in os.scandir("./detections/"):
                 try:
@@ -70,19 +58,19 @@ if __name__ == '__main__':
                     lp = predictChars(predicted_chars)
                     print(lp)
 
-                    # countPlate += 1
+                    countPlate += 1
 
                     # send string to middle-ware
                     # endPoint(lp)
                     # files = glob.glob('./detections/*')
                     # for file in files:
                     #     os.remove(file)
-                    # files = glob.glob('./outputs/*')
+                    # files = glob.glob('./outputs/1/*')
                     # for file in files:
                     #     os.remove(file)
 
                 except Exception:
-                    # print("error")
+                    print("error")
                     continue
 
         except Exception:
