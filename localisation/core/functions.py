@@ -20,7 +20,7 @@ def load_model():
 
 
 # function for cropping each detection and saving as new image
-def crop_objects(img, data, path, allowed_classes, img_name, detect_multiple):
+def crop_objects(img, data, path, img_name, detect_multiple):
     boxes, scores, classes, num_objects = data
     if num_objects == 0:
         img_path = os.path.join(str(os.getcwd), "localisation", "data", img_name)

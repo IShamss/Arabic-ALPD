@@ -5,17 +5,11 @@ import tensorflow as tf
 physical_devices = tf.config.experimental.list_physical_devices('GPU')
 if len(physical_devices) > 0:
     tf.config.experimental.set_memory_growth(physical_devices[0], True)
-from absl import app, flags, logging
-from absl.flags import FLAGS
+from absl import flags
 import core.utils as utils
-from core.yolov4 import filter_boxes
 from core.functions import *
-from tensorflow.python.saved_model import tag_constants
-from PIL import Image
 import cv2
 import numpy as np
-from tensorflow._api.v2.compat.v1 import ConfigProto
-from tensorflow._api.v2.compat.v1 import InteractiveSession
 
 flags.DEFINE_string('framework', 'tf', '(tf, tflite, trt')
 flags.DEFINE_string('weights', './localisation/checkpoints/yolov4-416',
@@ -94,10 +88,10 @@ def detect_and_crop(image_path, saved_model_loaded, detect_multiple):
     pred_bbox = [bboxes, scores.numpy()[0], classes.numpy()[0], valid_detections.numpy()[0]]
 
     # read in all class names from config
-    class_names = utils.read_class_names(cfg.YOLO.CLASSES)
+    # class_names = utils.read_class_names(cfg.YOLO.CLASSES)
 
     # by default allow all classes in .names file
-    allowed_classes = list(class_names.values())
+    # allowed_classes = list(class_names.values())
 
     # if crop flag is enabled, crop each detection and save it as new image
     crop_path = os.path.join(os.getcwd(), 'detections')
@@ -106,7 +100,7 @@ def detect_and_crop(image_path, saved_model_loaded, detect_multiple):
     except FileExistsError:
         pass
     detected, crop_path = crop_objects(cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB), pred_bbox, crop_path, 
-                                                            allowed_classes, image_name, detect_multiple=False)
+                                                             image_name, detect_multiple=False)
     if detected:
         return True, crop_path
     else:
