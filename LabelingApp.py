@@ -1,8 +1,9 @@
-from PyQt5 import QtWidgets, uic, QtGui,QtCore
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QWidget, QDialog, QMainWindow, QPushButton, QFrame,QTextEdit,QLabel,QGridLayout
 import sys
-from PIL import Image,ImageQt
+
+from PIL import Image, ImageQt
+from PyQt5 import QtWidgets, uic, QtGui, QtCore
+from PyQt5.QtWidgets import QMainWindow, QPushButton, QTextEdit, QLabel
+
 # from detect import crop_one
 sys.path.insert(0,'./localisation')
 import detect as detect
@@ -10,7 +11,6 @@ from NewSegmentation.newSeg import segmentChars
 from  recognition.KNN import predictChars , classify_image_arrays
 import os
 import numpy as np
-import cv2
 from datetime import datetime
 
 btn_pushed = False
@@ -18,7 +18,7 @@ class UI(QMainWindow):
     def __init__(self):
         super(UI, self).__init__()
         # Load Screen
-        uic.loadUi('starter.ui', self)
+        uic.loadUi('labellingapp.ui', self)
         # Button
         self.findChild(QPushButton, "startButton").clicked.connect(self.Run)
         # Get Input from each field

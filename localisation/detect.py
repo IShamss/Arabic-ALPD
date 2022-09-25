@@ -1,7 +1,9 @@
 import os
+
 # comment out below line to enable tensorflow outputs
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import tensorflow as tf
+
 physical_devices = tf.config.experimental.list_physical_devices('GPU')
 if len(physical_devices) > 0:
     tf.config.experimental.set_memory_growth(physical_devices[0], True)
@@ -25,7 +27,7 @@ flags.DEFINE_boolean('crop', True, 'crop detections from images')
 flags.DEFINE_boolean('ocr', False, 'perform generic OCR on detection regions')
 flags.DEFINE_boolean('plate', False, 'perform license plate recognition')
 
-weights='./localisation/checkpoints/yolov4-416'
+weights = './localisation/checkpoints/yolov4-416'
 iou = 0.45
 score = 0.50
 size = 416
@@ -73,7 +75,8 @@ def detect_and_crop(image_path, saved_model_loaded, detect_multiple):
 
     for bbox in bboxes:
         if bbox[0] != 0 and bbox[1] != 0 and bbox[2] != 0 and bbox[3] != 0:
-            cv2.rectangle(original_image_clrs, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), (0, 255, 0), 2) 
+            cv2.rectangle(original_image_clrs, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), (0, 255, 0),
+                          25)
 
     img_path = "./green_boxes"
     try:
@@ -117,13 +120,13 @@ def crop_one(image_path, detect_multiple):
         print("Success")
         return crop_path, []
     else:
-        image_path = os.path.relpath(crop_path, start = os.curdir)
+        image_path = os.path.relpath(crop_path, start=os.curdir)
         image_path.replace(os.sep, '/')
         return [], image_path
 
 
-def crop_multiple(directory_path, detect_multiple):
-    final_crop_paths = [] 
+def crop_multiple(directory_path, detect_multiple=False):
+    final_crop_paths = []
     not_detected = []
     image_paths = []
     file_paths = os.listdir(directory_path)

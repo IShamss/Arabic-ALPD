@@ -1,11 +1,11 @@
 import os
 import sys
 
-# from integeration.merge import endPoint
 import cv2 as cv
 from matplotlib import pyplot as plt
 
 from NewSegmentation.newSeg import segmentChars
+from integeration.client import endPoint
 from recognition.KNN import classify_unlabelled_directory
 from recognition.KNN import predictChars
 
@@ -30,46 +30,46 @@ def printChars(chars, count):
 # Main  which responsible for integration of whole image processing pipelines
 if __name__ == '__main__':
     while True:
-        # try:
-        countPlate = 1
-        # stream(url)
+        try:
+            countPlate = 1
+            # stream(url)
 
-        # localization
-        detect.crop_multiple("./localisation/data/demo/", False)
+            # localization
+            detect.crop_multiple("./localisation/data/demo/")
 
-        for filename in os.scandir("./detections/"):
-            try:
-                # segmentation
-                _, chars = segmentChars(filename.path)
+            for filename in os.scandir("./detections/"):
+                try:
+                    # segmentation
+                    _, chars = segmentChars(filename.path)
 
-                # print chars segmented
-                printChars(chars, countPlate)
+                    # print chars segmented
+                    printChars(chars, countPlate)
 
-                # recognition
-                predicted_chars = classify_unlabelled_directory(f'{path}{countPlate}/')
+                    # recognition
+                    predicted_chars = classify_unlabelled_directory(f'{path}{countPlate}/')
 
-                # print string
-                lp = predictChars(predicted_chars)
-                print(lp)
+                    # print string
+                    lp = predictChars(predicted_chars)
+                    print(lp)
 
-                countPlate += 1
+                    countPlate += 1
 
-                # send string to middle-ware
-                # endPoint(lp)
-                # files = glob.glob('./detections/*')
-                # for file in files:
-                #     os.remove(file)
-                # files = glob.glob('./outputs/1/*')
-                # for file in files:
-                #     os.remove(file)
+                    # send string to middle-ware
+                    print(endPoint(lp))
+                    # files = glob.glob('./detections/*')
+                    # for file in files:
+                    #     os.remove(file)
+                    # files = glob.glob('./outputs/1/*')
+                    # for file in files:
+                    #     os.remove(file)
 
-            except Exception:
-                print("error")
-                continue
+                except Exception:
+                    print("error")
+                    continue
 
-    # except Exception:
-    #     print("outer error")
-    #     continue
+        except Exception:
+            print("outer error")
+            continue
 
 # segObject = Segmentation(filename.path)
 # chars = segObject.run()
