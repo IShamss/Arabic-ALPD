@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QMainWindow, QPushButton, QTextEdit, QLabel
 # from detect import crop_one
 sys.path.insert(0, './localisation')
 from localisation import detect
-from NewSegmentation.newSeg import segmentChars
+from NewSegmentation.segment import segmentChars
 from recognition.KNN import predictChars, classify_image_arrays
 from integeration.client import endPoint
 from localisation.core.functions import load_model

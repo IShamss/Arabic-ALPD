@@ -1,15 +1,14 @@
-import glob
+import os
 import os
 import sys
 
 import cv2 as cv
 from matplotlib import pyplot as plt
 
-from NewSegmentation.newSeg import segmentChars
+from NewSegmentation.segment import newOldSegmentation
 from integeration.client import endPoint
 from recognition.KNN import classify_unlabelled_directory
 from recognition.KNN import predictChars
-from testing.webcam import stream
 
 path = './outputs/'
 # url = "http://192.168.98.146:8080/video"
@@ -37,16 +36,16 @@ if __name__ == '__main__':
     while True:
         try:
             countPlate = 1
-            stream(url)
+            # stream(url)
 
             # localization
-            detect.crop_multiple("./localisation/data/images/", False, saveModel)
+            detect.crop_multiple("./localisation/data/demo/", False, saveModel)
 
             for filename in os.scandir("./detections/"):
                 try:
                     # segmentation
-                    _, chars = segmentChars(filename.path)
-
+                    # _, chars = segmentChars(filename.path)
+                    chars = newOldSegmentation(filename.path)
                     # print chars segmented
                     printChars(chars, countPlate)
 
@@ -61,12 +60,12 @@ if __name__ == '__main__':
 
                     # send string to middle-ware
                     print(endPoint(lp))
-                    files = glob.glob('./detections/*')
-                    for file in files:
-                        os.remove(file)
-                    files = glob.glob('./outputs/1/*')
-                    for file in files:
-                        os.remove(file)
+                    # files = glob.glob('./detections/*')
+                    # for file in files:
+                    #     os.remove(file)
+                    # files = glob.glob('./outputs/1/*')
+                    # for file in files:
+                    #     os.remove(file)
 
                 except Exception:
                     # print("error")
