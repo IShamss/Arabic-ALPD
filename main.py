@@ -1,3 +1,4 @@
+import glob
 import os
 import sys
 
@@ -8,11 +9,14 @@ from NewSegmentation.newSeg import segmentChars
 from integeration.client import endPoint
 from recognition.KNN import classify_unlabelled_directory
 from recognition.KNN import predictChars
+from testing.webcam import stream
 
 path = './outputs/'
-url = "http://192.168.98.146:8080/video"
+# url = "http://192.168.98.146:8080/video"
+url = "http://9.246.89.46:8080/video"
 sys.path.insert(0, './localisation')
 import detect as detect
+from localisation.core.functions import load_model
 
 
 def printChars(chars, count):
@@ -29,13 +33,14 @@ def printChars(chars, count):
 
 # Main  which responsible for integration of whole image processing pipelines
 if __name__ == '__main__':
+    saveModel = load_model()
     while True:
         try:
             countPlate = 1
-            # stream(url)
+            stream(url)
 
             # localization
-            detect.crop_multiple("./localisation/data/demo/")
+            detect.crop_multiple("./localisation/data/images/", False, saveModel)
 
             for filename in os.scandir("./detections/"):
                 try:
@@ -52,23 +57,23 @@ if __name__ == '__main__':
                     lp = predictChars(predicted_chars)
                     print(lp)
 
-                    countPlate += 1
+                    # countPlate += 1
 
                     # send string to middle-ware
                     print(endPoint(lp))
-                    # files = glob.glob('./detections/*')
-                    # for file in files:
-                    #     os.remove(file)
-                    # files = glob.glob('./outputs/1/*')
-                    # for file in files:
-                    #     os.remove(file)
+                    files = glob.glob('./detections/*')
+                    for file in files:
+                        os.remove(file)
+                    files = glob.glob('./outputs/1/*')
+                    for file in files:
+                        os.remove(file)
 
                 except Exception:
-                    print("error")
+                    # print("error")
                     continue
 
         except Exception:
-            print("outer error")
+            # print("outer error")
             continue
 
 # segObject = Segmentation(filename.path)
