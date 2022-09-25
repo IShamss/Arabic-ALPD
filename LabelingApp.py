@@ -84,6 +84,7 @@ class UI(QMainWindow):
     def finish(self):
         self.main_img.clear()
         self.plate_img.clear()
+        self.main_img.setAlignment(QtCore.Qt.AlignCenter)
         self.main_img.setText("Enter a new input directory")
 
 
