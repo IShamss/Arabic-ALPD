@@ -70,17 +70,19 @@ class UI(QMainWindow):
             self.labels = self.labels[::-1]
             self.labels = self.labels.split(" ")
             for idx, char in enumerate(chars):
-                self.segmented_chars[idx].setScaledContents(True)
-                img = Image.fromarray(char).convert('RGB')
-                img = np.array(img)
-                # render the segmented images
-                # self.to_be_saved[img] = self.labels[idx]
-                img = img[:, :, ::-1].copy()
-                image = QtGui.QImage(img, img.shape[1], img.shape[0], img.shape[1] * 3, QtGui.QImage.Format_BGR888)
-                pix = QtGui.QPixmap(image)
-                self.segmented_chars[idx].setPixmap(QtGui.QPixmap(pix))
-                self.textbox_values[idx].setText(self.labels[idx])
-
+                try:
+                    self.segmented_chars[idx].setScaledContents(True)
+                    img = Image.fromarray(char).convert('RGB')
+                    img = np.array(img)
+                    # render the segmented images
+                    # self.to_be_saved[img] = self.labels[idx]
+                    img = img[:, :, ::-1].copy()
+                    image = QtGui.QImage(img, img.shape[1], img.shape[0], img.shape[1] * 3, QtGui.QImage.Format_BGR888)
+                    pix = QtGui.QPixmap(image)
+                    self.segmented_chars[idx].setPixmap(QtGui.QPixmap(pix))
+                    self.textbox_values[idx].setText(self.labels[idx])
+                except Exception:
+                    continue
             while (not btn_pushed):
                 QtCore.QCoreApplication.processEvents()
         self.finish()
