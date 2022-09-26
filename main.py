@@ -1,4 +1,4 @@
-import os
+import glob
 import os
 import sys
 
@@ -9,10 +9,11 @@ from NewSegmentation.segment import newOldSegmentation
 from integeration.client import endPoint
 from recognition.KNN import classify_unlabelled_directory
 from recognition.KNN import predictChars
+from testing.webcam import stream
 
 path = './outputs/'
 # url = "http://192.168.98.146:8080/video"
-url = "http://9.246.89.46:8080/video"
+url = "http://9.246.91.33:8080/video"
 sys.path.insert(0, './localisation')
 import detect as detect
 from localisation.core.functions import load_model
@@ -36,10 +37,10 @@ if __name__ == '__main__':
     while True:
         try:
             countPlate = 1
-            # stream(url)
+            stream(url)
 
             # localization
-            detect.crop_multiple("./localisation/data/demo/", False, saveModel)
+            detect.crop_multiple("./localisation/data/images/", False, saveModel)
 
             for filename in os.scandir("./detections/"):
                 try:
@@ -60,12 +61,12 @@ if __name__ == '__main__':
 
                     # send string to middle-ware
                     print(endPoint(lp))
-                    # files = glob.glob('./detections/*')
-                    # for file in files:
-                    #     os.remove(file)
-                    # files = glob.glob('./outputs/1/*')
-                    # for file in files:
-                    #     os.remove(file)
+                    files = glob.glob('./detections/*')
+                    for file in files:
+                        os.remove(file)
+                    files = glob.glob('./outputs/1/*')
+                    for file in files:
+                        os.remove(file)
 
                 except Exception:
                     # print("error")

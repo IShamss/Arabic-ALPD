@@ -15,6 +15,7 @@ from localisation.core.functions import load_model
 import os
 import numpy as np
 from datetime import datetime
+import glob
 
 btn_pushed = False
 
@@ -24,6 +25,8 @@ class UI(QMainWindow):
         super(UI, self).__init__()
         # Load Screen
         self.saveModel = load_model()
+        self.clean_directory("./green_boxes")
+        self.clean_directory("./detections")
         uic.loadUi('frontapp.ui', self)
         # Button
         self.findChild(QPushButton, "startButton").clicked.connect(self.Run)
@@ -119,7 +122,13 @@ class UI(QMainWindow):
         self.endpoint.clear()
         self.main_img.setAlignment(QtCore.Qt.AlignCenter)
         self.main_img.setText("Enter a new input directory")
+        self.clean_directory("./green_boxes")
+        self.clean_directory("./detections")
 
+    def clean_directory(self,path):
+        files = glob.glob(f'{path}/*')
+        for file in files:
+            os.remove(file)
     def clean(self):
         for label, text in zip(self.segmented_chars, self.textbox_values):
             label.clear()
