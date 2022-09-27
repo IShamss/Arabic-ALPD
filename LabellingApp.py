@@ -30,11 +30,17 @@ class UI(QMainWindow):
         self.output_path = self.findChild(QTextEdit, "outputPath")
         self.findChild(QPushButton, 'saveButton').clicked.connect(self.saveImg)
         self.findChild(QPushButton, 'skipButton').clicked.connect(self.skipImg)
+        self.findChild(QPushButton, 'incorrect').clicked.connect(self.increment_incorrect)
         self.main_img = self.findChild(QLabel, "mainImage")
         self.plate_img = self.findChild(QLabel, "plateImg")
+        self.incorrect_num_label = self.findChild(QLabel,"incorrectNum")
+        # to enable the increment of incorrect images
+        self.enable_increment=True
         self.segmented_chars = []
         self.combo_values = []
         self.images_to_be_saved = []
+        self.image_count=0
+        self.incorrect_count=0
         for i in range(1, 8):
             self.segmented_chars.append(self.findChild(QLabel, f"seg{i}"))
             self.combo_values.append(self.findChild(QComboBox, f"val{i}"))
@@ -48,7 +54,13 @@ class UI(QMainWindow):
         values.extend(["أ","ب","ج","د","ر","س","ص","ط","ع","ف","ق","ل","م","ن","ه","و","ى"])
         for box in self.combo_values:
             box.addItems(values)
+            # box.currentTextChanged.connect(self.increment_incorrect)
 
+    def increment_incorrect(self):
+        if self.enable_increment:
+            self.incorrect_count+=1
+            self.enable_increment=False
+            self.incorrect_num_label.setText(f"Incorrect : {self.incorrect_count}")
 
     def Run(self):
         # include prediction code here
@@ -70,6 +82,7 @@ class UI(QMainWindow):
             self.plate_img.setPixmap(QtGui.QPixmap("./" + plate_path))
             _, chars = segmentChars(plate_path)
             self.labels = predictChars(classify_image_arrays(chars))
+            self.image_count+=1
             self.labels = self.labels[::-1]
             self.labels = self.labels.split(" ")
             for idx, char in enumerate(chars):
@@ -96,12 +109,17 @@ class UI(QMainWindow):
         self.main_img.clear()
         self.plate_img.clear()
         self.main_img.setAlignment(QtCore.Qt.AlignCenter)
-        self.main_img.setText("Enter a new input directory")
+        self.main_img.setText("Enter a new input directory\nAccuracy : {:.2f} %".format((self.incorrect_count / self.image_count)*100))
+        self.image_count=0
+        self.incorrect_count=0
 
     def clean(self):
         for label, text in zip(self.segmented_chars, self.combo_values):
+            # text.disconnect()
             label.clear()
             text.setCurrentIndex(0)
+            self.enable_increment=True
+            # text.currentTextChanged.connect(self.increment_incorrect)
 
     def create_directories(self):
         output_path = self.output_path.toPlainText()
@@ -111,34 +129,6 @@ class UI(QMainWindow):
 
     def saveImg(self):
         print("Saved")
-        mappings = {
-            "1": "1",
-            "2": "2",
-            "3": "3",
-            "4": "4",
-            "5": "5",
-            "6": "6",
-            "7": "7",
-            "8": "8",
-            "9": "9",
-            "10": "أ",
-            "11": "ب",
-            "12": "ج",
-            "13": "د",
-            "14": "ر",
-            "15": "س",
-            "16": "ص",
-            "17": "ط",
-            "18": "ع",
-            "19": "ف",
-            "20": "ق",
-            "21": "ل",
-            "22": "م",
-            "23": "ن",
-            "24": "ه",
-            "25": "و",
-            "26": "ي",
-        }
         for result, img in zip(self.combo_values, self.segmented_chars):
             selected_idx=result.currentIndex()
             if selected_idx != 0:
