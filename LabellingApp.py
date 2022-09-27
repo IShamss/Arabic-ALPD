@@ -2,7 +2,7 @@ import sys
 
 from PIL import Image, ImageQt
 from PyQt5 import QtWidgets, uic, QtGui, QtCore
-from PyQt5.QtWidgets import QMainWindow, QPushButton, QTextEdit, QLabel
+from PyQt5.QtWidgets import QMainWindow, QPushButton, QTextEdit, QLabel,QComboBox
 
 # from detect import crop_one
 sys.path.insert(0, './localisation')
@@ -22,30 +22,33 @@ class UI(QMainWindow):
         super(UI, self).__init__()
         # Load Screen
         self.saveModel = load_model()
-        uic.loadUi('labellingapp.ui', self)
+        uic.loadUi('labellingapp2.ui', self)
         # Button
         self.findChild(QPushButton, "startButton").clicked.connect(self.Run)
         # Get Input from each field
         self.input_path = self.findChild(QTextEdit, "inputPath")
-        # self.input_path = self.input_path.toPlainText()
         self.output_path = self.findChild(QTextEdit, "outputPath")
-        # self.output_path = self.output_path.toPlainText()
         self.findChild(QPushButton, 'saveButton').clicked.connect(self.saveImg)
         self.findChild(QPushButton, 'skipButton').clicked.connect(self.skipImg)
-        # QtCore.QObject.connect(save_btn,QtCore.SIGNAL("clicked()"),self.saveImg)
-        # QtCore.QObject.connect(skip_btn,QtCore.SIGNAL("clicked()"),self.skipImg)
-        # self.function = self.findChild(QLineEdit, "Function")
-        # self.minVal = self.findChild(QLineEdit, "Min")
         self.main_img = self.findChild(QLabel, "mainImage")
         self.plate_img = self.findChild(QLabel, "plateImg")
         self.segmented_chars = []
-        self.textbox_values = []
+        self.combo_values = []
         self.images_to_be_saved = []
         for i in range(1, 8):
             self.segmented_chars.append(self.findChild(QLabel, f"seg{i}"))
-            self.textbox_values.append(self.findChild(QTextEdit, f"val{i}"))
+            self.combo_values.append(self.findChild(QComboBox, f"val{i}"))
         self.clean()
+        self.populate_values()
         self.show()
+
+
+    def populate_values(self):
+        values=[str(i) for i in range(0,10)]
+        values.extend(["أ","ب","ج","د","ر","س","ص","ط","ع","ف","ق","ل","م","ن","ه","و","ى"])
+        for box in self.combo_values:
+            box.addItems(values)
+
 
     def Run(self):
         # include prediction code here
@@ -75,12 +78,14 @@ class UI(QMainWindow):
                     img = Image.fromarray(char).convert('RGB')
                     img = np.array(img)
                     # render the segmented images
-                    # self.to_be_saved[img] = self.labels[idx]
                     img = img[:, :, ::-1].copy()
                     image = QtGui.QImage(img, img.shape[1], img.shape[0], img.shape[1] * 3, QtGui.QImage.Format_BGR888)
                     pix = QtGui.QPixmap(image)
                     self.segmented_chars[idx].setPixmap(QtGui.QPixmap(pix))
-                    self.textbox_values[idx].setText(self.labels[idx])
+                    # set the values of the combobox
+                    index = self.combo_values[idx].findText(self.labels[idx], QtCore.Qt.MatchFixedString)
+                    if index >= 0:
+                        self.combo_values[idx].setCurrentIndex(index)
                 except Exception:
                     continue
             while (not btn_pushed):
@@ -94,9 +99,9 @@ class UI(QMainWindow):
         self.main_img.setText("Enter a new input directory")
 
     def clean(self):
-        for label, text in zip(self.segmented_chars, self.textbox_values):
+        for label, text in zip(self.segmented_chars, self.combo_values):
             label.clear()
-            text.setText("0")
+            text.setCurrentIndex(0)
 
     def create_directories(self):
         output_path = self.output_path.toPlainText()
@@ -134,16 +139,12 @@ class UI(QMainWindow):
             "25": "و",
             "26": "ي",
         }
-        key_list = list(mappings.keys())
-        val_list = list(mappings.values())
-        for result, img in zip(self.textbox_values, self.segmented_chars):
-            if result.toPlainText() != "0":
-                directory_num = key_list[val_list.index(result.toPlainText())]
-                path = self.output_path.toPlainText() + f"/{directory_num}"
-                # img=np.array(img.pixmap().toImage())
+        for result, img in zip(self.combo_values, self.segmented_chars):
+            selected_idx=result.currentIndex()
+            if selected_idx != 0:
+                path = self.output_path.toPlainText() + f"/{selected_idx}"
                 image = ImageQt.fromqpixmap(img.pixmap())
                 image.save(f"{path}/{str(datetime.now())[-5:]}.jpg")
-                # cv2.imwrite(os.path.join(path,f"{datetime.now()}.jpg"),image)
 
         global btn_pushed
         btn_pushed = True
