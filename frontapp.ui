@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1174</width>
+    <width>1525</width>
     <height>843</height>
    </rect>
   </property>
@@ -111,7 +111,7 @@ box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
    <widget class="QLabel" name="mainImage">
     <property name="geometry">
      <rect>
-      <x>60</x>
+      <x>20</x>
       <y>150</y>
       <width>431</width>
       <height>291</height>
@@ -173,7 +173,7 @@ border: 2px solid #86bcfa;
    <widget class="QLabel" name="greenImg">
     <property name="geometry">
      <rect>
-      <x>650</x>
+      <x>530</x>
       <y>150</y>
       <width>431</width>
       <height>291</height>
@@ -211,13 +211,103 @@ border: 2px solid #86bcfa;
      <string/>
     </property>
    </widget>
+   <widget class="QLabel" name="stream">
+    <property name="geometry">
+     <rect>
+      <x>1030</x>
+      <y>150</y>
+      <width>431</width>
+      <height>291</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 8px;
+background-color: white;
+color: black;
+border: 2px solid #86bcfa;
+padding: 5px;
+</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="PushStream">
+    <property name="geometry">
+     <rect>
+      <x>1300</x>
+      <y>490</y>
+      <width>161</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 8px;
+font-size: 20px;
+background-color: #3093ed;
+color: black;
+border: 2px solid #3093ed;
+box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+</string>
+    </property>
+    <property name="text">
+     <string>Stream</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="close">
+    <property name="geometry">
+     <rect>
+      <x>1100</x>
+      <y>490</y>
+      <width>161</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 8px;
+font-size: 20px;
+background-color: #3093ed;
+color: black;
+border: 2px solid #3093ed;
+box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+</string>
+    </property>
+    <property name="text">
+     <string>Close Stream</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="capture">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>1200</x>
+      <y>580</y>
+      <width>161</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 8px;
+font-size: 20px;
+background-color: #3093ed;
+color: black;
+border: 2px solid #3093ed;
+box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+</string>
+    </property>
+    <property name="text">
+     <string>Capture</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1174</width>
+     <width>1525</width>
      <height>26</height>
     </rect>
    </property>
