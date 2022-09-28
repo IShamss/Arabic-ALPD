@@ -3,29 +3,24 @@ import os
 import numpy as np
 from matplotlib import pyplot as plt
 
-path = "C:/Users/ZZ01GX865/Desktop/Outsss"
+#merges overlapping contours into one character
+def mergecontours(imageResult, thresh, minX, minY, maxX, maxY, im2):
+    charCopy = np.zeros((44, 24))
+    # draw the rectangle
+    char = thresh[minY - 35:maxY + 35, minX - 5:maxX + 5]
+    char = cv2.resize(char, (20, 40))
+    
+    cv2.rectangle(im2, (minX - 5, minY - 40), (maxX + 5, maxY + 40), (0, 255, 0), 2)
+    char = cv2.bitwise_not(char)
+
+    charCopy[2:42, 2:22] = char
+    charCopy[0:2, :] = 0
+    charCopy[:, 0:2] = 0
+    charCopy[42:44, :] = 0
+    charCopy[:, 22:24] = 0
+    imageResult.append(charCopy)
+
 def segmentCharacters(path):
-
-    #merges overlapping contours into one character
-    def mergecontours(imageResult, thresh,minX,minY,maxX,maxY,im2):
-        charCopy = np.zeros((44, 24))
-        # draw the rectangle
-        char = thresh[minY - 35:maxY + 35, minX - 5:maxX + 5]
-        try:
-            char = cv2.resize(char, (20, 40))
-        except Exception:
-            print("Error")
-
-        cv2.rectangle(im2, (minX - 5, minY - 40), (maxX + 5, maxY+ 40), (0, 255, 0), 2)
-        char = cv2.bitwise_not(char)
-
-        charCopy[2:42, 2:22] = char
-        charCopy[0:2, :] = 0
-        charCopy[:, 0:2] = 0
-        charCopy[42:44, :] = 0
-        charCopy[:, 22:24] = 0
-        imageResult.append(charCopy)
-
 
     #preprocessing on original image to be ready to get all contours
     gray = cv2.imread(path, 0)
@@ -74,13 +69,13 @@ def segmentCharacters(path):
         # if ratio between contour's height and width is more than 7.5 then filter it
         if ratio > 7.5:
             continue
-        # if x of contour located in first 11 pixels then skip it
+        # if x coordinate of contour located in first 11 pixels then skip it
         # if x < 12:
         #     continue
-        # if x of contour located in last 35 pixels then skip it
+        # if x coordinate of contour located in last 35 pixels then skip it
         if x > 565:
             continue
-        # if y of contour located in first 75 pixels then skip it
+        # if y coordinate of contour located in first 75 pixels then skip it
         if y < 75:
             continue
         listOfContours.append(x)
@@ -111,8 +106,6 @@ def segmentCharacters(path):
         charCopy[42:44, :] = 0
         charCopy[:, 22:24] = 0
         imageResult.append(charCopy)
-
-    #print(contourDictionary)
 
     # overlapping contours detection
 
@@ -154,8 +147,6 @@ def segmentCharacters(path):
                             # add overlapping contours to a list to be deleted
                             todelete.append(ii)
                             todelete.append(jj)
-                            #print("todelete:", ii, jj)
-    # print("todelete before sorting",todelete)
 
     # sort list of merged contours reversly to be deleted right without conflicts
     todelete.sort(reverse=True)
