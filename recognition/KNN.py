@@ -241,7 +241,7 @@ def save_model(train_data_directory):
 
 
 
-save_model(combined_directory)
+# save_model(combined_directory)
 
 
 

@@ -1,36 +1,22 @@
 import glob
-import imp
 import os
-
-from matplotlib import pyplot as plt
-from recognition.rec import Recognition
-from recognition.KNN import classify_unlabelled_directory
-from recognition.KNN import predictChars
-from NewSegmentation.newSeg import segmentChars
-from integeration.client import endPoint
-from testing.webcam import stream
-from NewSegmentation.oldSeg import Segmentation
-# from integeration.merge import endPoint
-from skimage.filters import threshold_local
-from skimage import segmentation
-from skimage import measure
-from imutils import perspective
-import numpy as np
-import imutils
-import cv2 as cv
 import sys
 
+import cv2 as cv
+from matplotlib import pyplot as plt
+
+from NewSegmentation.segment import newOldSegmentation
+from integeration.client import endPoint
+from recognition.KNN import classify_unlabelled_directory
+from recognition.KNN import predictChars
+from testing.webcam import stream
+
 path = './outputs/'
-url = "http://192.168.98.146:8080/video"
+# url = "http://192.168.98.146:8080/video"
+url = "http://9.246.91.33:8080/video"
 sys.path.insert(0, './localisation')
 import detect as detect
-# from segmentation.seg import Segmentation
-from absl import app
-
-
-def predict(image_path):
-    # crop_path = detect.crop_multiple(image_path)[0]
-    detect.crop_one(image_path, detect_multiple=False)[0]
+from localisation.core.functions import load_model
 
 
 def printChars(chars, count):
@@ -47,19 +33,20 @@ def printChars(chars, count):
 
 # Main  which responsible for integration of whole image processing pipelines
 if __name__ == '__main__':
+    saveModel = load_model()
     while True:
         try:
             countPlate = 1
-            # stream(url)
+            stream(url)
 
             # localization
-            detect.crop_multiple("./localisation/data/demo/", detect_multiple=False)[0]
+            detect.crop_multiple("./localisation/data/images/", False, saveModel)
 
             for filename in os.scandir("./detections/"):
                 try:
                     # segmentation
-                    _, chars = segmentChars(filename.path)
-
+                    # _, chars = segmentChars(filename.path)
+                    chars = newOldSegmentation(filename.path)
                     # print chars segmented
                     printChars(chars, countPlate)
 
@@ -73,20 +60,20 @@ if __name__ == '__main__':
                     # countPlate += 1
 
                     # send string to middle-ware
-                    # endPoint(lp)
-                    # files = glob.glob('./detections/*')
-                    # for file in files:
-                    #     os.remove(file)
-                    # files = glob.glob('./outputs/*')
-                    # for file in files:
-                    #     os.remove(file)
+                    print(endPoint(lp))
+                    files = glob.glob('./detections/*')
+                    for file in files:
+                        os.remove(file)
+                    files = glob.glob('./outputs/1/*')
+                    for file in files:
+                        os.remove(file)
 
                 except Exception:
                     # print("error")
                     continue
 
         except Exception:
-            print("outer error")
+            # print("outer error")
             continue
 
 # segObject = Segmentation(filename.path)

@@ -1,21 +1,17 @@
 import os
+
 # comment out below line to enable tensorflow outputs
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import tensorflow as tf
+
 physical_devices = tf.config.experimental.list_physical_devices('GPU')
 if len(physical_devices) > 0:
     tf.config.experimental.set_memory_growth(physical_devices[0], True)
-from absl import app, flags, logging
-from absl.flags import FLAGS
+from absl import flags
 import core.utils as utils
-from core.yolov4 import filter_boxes
 from core.functions import *
-from tensorflow.python.saved_model import tag_constants
-from PIL import Image
 import cv2
 import numpy as np
-from tensorflow._api.v2.compat.v1 import ConfigProto
-from tensorflow._api.v2.compat.v1 import InteractiveSession
 
 flags.DEFINE_string('framework', 'tf', '(tf, tflite, trt')
 flags.DEFINE_string('weights', './localisation/checkpoints/yolov4-416',
@@ -31,21 +27,21 @@ flags.DEFINE_boolean('crop', True, 'crop detections from images')
 flags.DEFINE_boolean('ocr', False, 'perform generic OCR on detection regions')
 flags.DEFINE_boolean('plate', False, 'perform license plate recognition')
 
-weights='./localisation/checkpoints/yolov4-416'
+weights = './localisation/checkpoints/yolov4-416'
 iou = 0.45
 score = 0.50
 size = 416
 image_extensions = (".jpg", ".JPG", ".png", ".PNG", ".jpeg", ".JPEG")
 
-def detect_and_crop(image_path, saved_model_loaded, detect_multiple):
 
+def detect_and_crop(image_path, saved_model_loaded, detect_multiple):
     # loop through images in list and run Yolov4 model on each
     original_image_clrs = cv2.imread(image_path)
     original_image = cv2.cvtColor(original_image_clrs, cv2.COLOR_BGR2RGB)
 
     image_data = cv2.resize(original_image, (size, size))
     image_data = image_data / 255.
-    
+
     # get image name by using split method
     image_name_ext = image_path.split('/')[-1]
     image_name = image_name_ext.split('.')[0]
@@ -79,7 +75,8 @@ def detect_and_crop(image_path, saved_model_loaded, detect_multiple):
 
     for bbox in bboxes:
         if bbox[0] != 0 and bbox[1] != 0 and bbox[2] != 0 and bbox[3] != 0:
-            cv2.rectangle(original_image_clrs, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), (0, 255, 0), 2) 
+            cv2.rectangle(original_image_clrs, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), (0, 255, 0),
+                          25)
 
     img_path = "./green_boxes"
     try:
@@ -94,10 +91,10 @@ def detect_and_crop(image_path, saved_model_loaded, detect_multiple):
     pred_bbox = [bboxes, scores.numpy()[0], classes.numpy()[0], valid_detections.numpy()[0]]
 
     # read in all class names from config
-    class_names = utils.read_class_names(cfg.YOLO.CLASSES)
+    # class_names = utils.read_class_names(cfg.YOLO.CLASSES)
 
     # by default allow all classes in .names file
-    allowed_classes = list(class_names.values())
+    # allowed_classes = list(class_names.values())
 
     # if crop flag is enabled, crop each detection and save it as new image
     crop_path = os.path.join(os.getcwd(), 'detections')
@@ -105,31 +102,31 @@ def detect_and_crop(image_path, saved_model_loaded, detect_multiple):
         os.mkdir(crop_path)
     except FileExistsError:
         pass
-    detected, crop_path = crop_objects(cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB), pred_bbox, crop_path, 
-                                                            allowed_classes, image_name, detect_multiple=False)
+    detected, crop_path = crop_objects(cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB), pred_bbox, crop_path,
+                                       image_name, detect_multiple=False)
     if detected:
         return True, crop_path
     else:
         # print("No license plate detected")
         return False, crop_path
-        
 
-def crop_one(image_path, detect_multiple):
-    saved_model_loaded = load_model()
+
+def crop_one(image_path, detect_multiple, saved_model_loaded):
+    # saved_model_loaded = load_model()
     detected, crop_path = detect_and_crop(image_path, saved_model_loaded, detect_multiple)
     if detected:
-        crop_path = os.path.relpath(crop_path, start = os.curdir)
+        crop_path = os.path.relpath(crop_path, start=os.curdir)
         crop_path.replace(os.sep, '/')
         print("Success")
         return crop_path, []
     else:
-        image_path = os.path.relpath(crop_path, start = os.curdir)
+        image_path = os.path.relpath(crop_path, start=os.curdir)
         image_path.replace(os.sep, '/')
         return [], image_path
 
 
-def crop_multiple(directory_path, detect_multiple):
-    final_crop_paths = [] 
+def crop_multiple(directory_path, detect_multiple=False, saved_model_loaded=False):
+    final_crop_paths = []
     not_detected = []
     image_paths = []
     file_paths = os.listdir(directory_path)
@@ -138,24 +135,25 @@ def crop_multiple(directory_path, detect_multiple):
             path = os.path.join(directory_path, path)
             path = path.replace(os.sep, '/')
             image_paths.append(path)
-    saved_model_loaded = load_model()
+    # saved_model_loaded = load_model()
     for image in image_paths:
         detected, crop_path = detect_and_crop(image, saved_model_loaded, detect_multiple)
         if detected:
-            crop_path = os.path.relpath(crop_path, start = os.curdir)
+            crop_path = os.path.relpath(crop_path, start=os.curdir)
             crop_path.replace(os.sep, '/')
             final_crop_paths.append(crop_path)
         else:
-            crop_path = os.path.relpath(crop_path, start = os.curdir)
+            crop_path = os.path.relpath(crop_path, start=os.curdir)
             crop_path.replace(os.sep, '/')
             not_detected.append(crop_path)
 
-    #print(not_detected)
+    # print(not_detected)
     return final_crop_paths
+
 
 if __name__ == '__main__':
     try:
-        #crop_one("./localisation/data/images/IMG (185).jpeg")
+        # crop_one("./localisation/data/images/IMG (185).jpeg")
         crop_multiple("./localisation/data/images")
     except SystemExit:
         pass

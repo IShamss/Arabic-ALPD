@@ -1,5 +1,4 @@
 # importing the requests library
-import json
 import requests
 from nose.tools import assert_true
 
@@ -15,7 +14,7 @@ def endPoint(plate):
     request = requests.post(url=apiEndpoint, data=body)
     assert_true(request.ok)
     if request.status_code == 200:
-        print(request.text)
+        return request.text
     elif request.status_code == 404:
         print("Result not found!")
     else:
