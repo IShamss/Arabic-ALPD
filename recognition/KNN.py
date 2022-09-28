@@ -19,22 +19,17 @@ test_images = "./recognition/8/"
 
 
 
-#Takes a directory path and returns all the names of the subdirectories and their paths
-def open_directory(directory_path):
+#Takes a directory path and returns all the names of the subdirectories or images, and their paths
+def open_directory(directory_path, images:bool):
     names = os.listdir(directory_path)
-    paths = [directory_path + name + "/" for name in names]
+    if images:
+        paths = [directory_path + name for name in names]
+    else:
+        paths = [directory_path + name + "/" for name in names]
     return paths, names
 
 
-
-def open_dic(directory_path):
-    names = os.listdir(directory_path)
-    paths = [directory_path + name for name in names]
-    return paths, names
-
-
-
-#Takes a list of image paths and returns a list of image
+#Takes a list of image paths and returns a list of image np arrays
 def open_images(image_paths):
     image_arrays = [np.array(Image.open(image_path)) for image_path in image_paths]
     return image_arrays
@@ -78,7 +73,7 @@ def label_data(directory):
     data_labelled = {}
     data_fvectors = []
     data_labels = []
-    subdirectory_paths, subdirectory_names = open_directory(directory)
+    subdirectory_paths, subdirectory_names = open_directory(directory, images=False)
     for i in range(len(subdirectory_names)):
         images = os.listdir(subdirectory_paths[i])
         images = [subdirectory_paths[i] + "/" + image for image in images]
@@ -103,7 +98,7 @@ def split_train_test(directory):
     test_model = {}
     test_fvectors = []
     test_labels = []
-    subdirectory_paths, subdirectory_names = open_directory(directory)
+    subdirectory_paths, subdirectory_names = open_directory(directory, images=False)
     for i in range(len(subdirectory_names)):
         images = os.listdir(subdirectory_paths[i])
         shuffle(images)
@@ -145,7 +140,7 @@ def load_pickle() -> dict:
 
 
 
-#Computes the dot distance between arrays of training and testing data and returns the distance where rows correspond to test images and columns correspond to train images, very quick
+#Computes the cosine similarity between arrays of training and testing data and returns the distance where rows correspond to test images and columns correspond to train images, very quick
 def cosine_similarity(training, testing):
     tdott = np.dot(testing, training.transpose())
     modtrain = np.sqrt(np.sum(training * training, axis=1))
@@ -172,26 +167,18 @@ KNNC = 5  #K in K nearest neighbours
 
 #Takes a training dict and a testing dict, computes the distance between the feature vectors, finds the k nearest images, extracts their labels,
 #finds the most common label, and classifies it as such. Returns labels in the same order as the test feature vectors
-def classify(train_model: dict, test_fvectors, k, distance) -> List[str]:
-    train = np.array(train_model["fvectors"])
+def classify(train_model: dict, test_fvectors, k) -> List[str]:
+    train_fvectors = np.array(train_model["fvectors"])
     train_labels = train_model["labels"]
 
     #Compute distance
-    if distance == 0:
-        dist = cosine_similarity(train, test_fvectors)
-    else:
-        dist = euclidean_distance(train, test_fvectors)
+    dist = cosine_similarity(train_fvectors, test_fvectors)
 
     #Extract k nearest images
     knearest = np.argsort(dist, axis=1)[:, 0:k]
 
     #Extract the labels of the k nearest neighbours for each test image
-    klabels = []
-    for i in range(len(knearest)):
-        individual_labels = []
-        for j in range(len(knearest[0])):
-            individual_labels.append(train_labels[knearest[i][j]])
-        klabels.append(individual_labels)
+    klabels = [[train_labels[knearest[i][j]] for j in range(k)] for i in range(len(knearest))]
 
     #Find the most comon label and classify
     klabels = pd.DataFrame(klabels)
@@ -202,10 +189,10 @@ def classify(train_model: dict, test_fvectors, k, distance) -> List[str]:
 
 
 #Computes the accuracy of the model by running classify and checking the percentage of true labels
-def evaluate(train_model: dict, test: dict, k, distance) -> Tuple[float, float]:
+def evaluate(train_model: dict, test: dict, k) -> Tuple[float, float]:
     true_labels = test["labels"]
-    test_fvectors = test["fvectors"]
-    output_labels = classify(train_model, test_fvectors, k, distance)
+    test_fvectors = np.array(test["fvectors"])
+    output_labels = classify(train_model, test_fvectors, k)
     n_of_correct_labels = 0
     #wrong_predictions = []
     #print(len(true_labels))
@@ -226,21 +213,21 @@ def evaluate(train_model: dict, test: dict, k, distance) -> Tuple[float, float]:
 
 
 #Creates a random test/train split and runs the classifier once
-def test_one(directory_of_images, k, distance):
+def test_one(directory_of_images, k):
     #train = label_data(directory_of_test_images)
     #test = label_data(directory_of_images)
     train, test = split_train_test(directory_of_images)
     #save_pickle(train)
-    return evaluate(test, train, k, distance)
+    return evaluate(train, test, k)
 
 
 
 
 #Runs the classifier n times, each time creating a new training/testing split, then prints the average accuracy of the n runs
-def test_n_times(directory_of_images, k, n, distance):
+def test_n_times(directory_of_images, k, n):
     accuracy = []
     for i in range(n):
-        accuracy.append(test_one(combined_directory, k, distance))
+        accuracy.append(test_one(directory_of_images, k))
     average = sum(accuracy) / n
     final_score = "Average score for k=" + str(k) + " = " + str(round(average, 2))
     print(final_score)
@@ -261,18 +248,18 @@ save_model(combined_directory)
 
 #Takes the directory path of the images we want to classify and returns the corresponding labels
 def classify_unlabelled_directory(segmented_image_directory):
-    image_paths, _ = open_dic(segmented_image_directory)
+    image_paths, _ = open_directory(segmented_image_directory, images=True)
     image_arrays = open_images(image_paths)
     image_fvectors = images_to_feature_vectors(image_arrays)
     train_model = load_pickle()
-    labels = classify(train_model, image_fvectors, 3, 0)
+    labels = classify(train_model, image_fvectors, 3)
     return labels
 
 
 def classify_image_arrays(image_arrays):
     image_fv = images_to_feature_vectors(image_arrays)
     train_model = load_pickle()
-    labels = classify(train_model, image_fv, 3, 0)
+    labels = classify(train_model, image_fv, 3)
     return labels
 
 
@@ -317,5 +304,5 @@ def predictChars(listOfChars):
 # save_model(combined_directory)
 # print("dsadas")
 #predicted_chars = classify_unlabelled_directory(/o)
-#print(predictChars(predicted_chars))
+#print(predictChars(predicted_chars)) 
 
