@@ -1,6 +1,7 @@
 import glob
 import os
 import sys
+import time
 
 import cv2 as cv
 from matplotlib import pyplot as plt
@@ -9,7 +10,6 @@ from NewSegmentation.segment import newOldSegmentation
 from integeration.client import endPoint
 from recognition.KNN import classify_unlabelled_directory
 from recognition.KNN import predictChars
-from testing.webcam import stream
 
 path = './outputs/'
 # url = "http://192.168.98.146:8080/video"
@@ -35,13 +35,15 @@ def printChars(chars, count):
 if __name__ == '__main__':
     saveModel = load_model()
     while True:
+
         try:
             countPlate = 1
-            stream(url)
+            # stream(url)
 
             # localization
-            detect.crop_multiple("./localisation/data/images/", False, saveModel)
-
+            start = time.time()
+            detect.crop_multiple("./localisation/data/demo/", False, saveModel)
+            # detect_and_crop_from_video("./localisation/data/videos/1.mp4", saveModel)
             for filename in os.scandir("./detections/"):
                 try:
                     # segmentation
@@ -53,10 +55,11 @@ if __name__ == '__main__':
                     # recognition
                     predicted_chars = classify_unlabelled_directory(f'{path}{countPlate}/')
 
+                    end = time.time()
                     # print string
                     lp = predictChars(predicted_chars)
                     print(lp)
-
+                    print(end - start)
                     # countPlate += 1
 
                     # send string to middle-ware

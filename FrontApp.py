@@ -21,6 +21,7 @@ from datetime import datetime
 import glob
 
 btn_pushed = False
+frame =0
 
 
 class UI(QMainWindow):
@@ -241,15 +242,16 @@ class VideoThread(QThread):
     def __init__(self):
         super().__init__()
         self._run_flag = True
-        self.frame = 0
+        # self.frame = 0
 
     def run(self):
         # capture from web-camera
         capture = cv.VideoCapture(0)
         while self._run_flag:
-            ret, self.frame = capture.read()
+            global frame
+            ret, frame = capture.read()
             if ret:
-                self.change_pixmap_signal.emit(self.frame)
+                self.change_pixmap_signal.emit(frame)
 
             # if cv.waitKey(1) == ord('q'):
             #     cv.imwrite(path, frame)
@@ -266,7 +268,9 @@ class VideoThread(QThread):
 
     def captureImg(self):
         try:
-            cv.imwrite(path, self.frame)
+            # cv.imshow('demo', frame)
+            global frame
+            cv.imwrite(path, frame)
         except Exception:
             print("Errorr")
 
