@@ -12,8 +12,9 @@ from recognition.KNN import classify_unlabelled_directory
 from recognition.KNN import predictChars
 
 path = './outputs/'
-# url = "http://192.168.98.146:8080/video"
-url = "http://9.246.91.33:8080/video"
+# url = "http://192.168.20.51:8080/video"
+url = "http://192.168.20.51:8080/video"
+# url = "http://9.246.91.33:8080/video"
 sys.path.insert(0, './localisation')
 import detect as detect
 from localisation.core.functions import load_model
@@ -49,6 +50,7 @@ if __name__ == '__main__':
                     # segmentation
                     # _, chars = segmentChars(filename.path)
                     chars = newOldSegmentation(filename.path)
+                    # chars = segmentCharacters(filename.path)
                     # print chars segmented
                     printChars(chars, countPlate)
 
@@ -60,7 +62,7 @@ if __name__ == '__main__':
                     lp = predictChars(predicted_chars)
                     print(lp)
                     print(end - start)
-                    # countPlate += 1
+                    countPlate += 1
 
                     # send string to middle-ware
                     print(endPoint(lp))
@@ -68,6 +70,9 @@ if __name__ == '__main__':
                     for file in files:
                         os.remove(file)
                     files = glob.glob('./outputs/1/*')
+                    for file in files:
+                        os.remove(file)
+                    files=glob.glob('./green_boxes/*')
                     for file in files:
                         os.remove(file)
 

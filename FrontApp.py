@@ -1,10 +1,7 @@
 import sys
 
-import cv2 as cv
 from PIL import Image, ImageQt
 from PyQt5 import QtWidgets, uic, QtGui, QtCore
-from PyQt5.QtCore import pyqtSignal, pyqtSlot, Qt, QThread
-from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QMainWindow, QPushButton, QTextEdit, QLabel
 
 # from detect import crop_one
@@ -21,7 +18,7 @@ from datetime import datetime
 import glob
 
 btn_pushed = False
-frame =0
+frame = 0
 
 
 class UI(QMainWindow):
@@ -36,15 +33,7 @@ class UI(QMainWindow):
         self.findChild(QPushButton, "startButton").clicked.connect(self.Run)
         # Get Input from each field
         self.input_path = self.findChild(QTextEdit, "inputPath")
-        # self.input_path = self.input_path.toPlainText()
-        # self.output_path = self.findChild(QTextEdit,"outputPath")
-        # self.output_path = self.output_path.toPlainText()
-        # self.findChild(QPushButton,'saveButton').clicked.connect(self.saveImg)
         self.findChild(QPushButton, 'skipButton').clicked.connect(self.skipImg)
-        # QtCore.QObject.connect(save_btn,QtCore.SIGNAL("clicked()"),self.saveImg)
-        # QtCore.QObject.connect(skip_btn,QtCore.SIGNAL("clicked()"),self.skipImg)
-        # self.function = self.findChild(QLineEdit, "Function")
-        # self.minVal = self.findChild(QLineEdit, "Min")
         self.main_img = self.findChild(QLabel, "mainImage")
         self.main_img.hide()
         self.plate_img = self.findChild(QLabel, "plateImg")
@@ -52,12 +41,6 @@ class UI(QMainWindow):
         self.green_img.hide()
         self.endpoint = self.findChild(QLabel, "endpoint")
         self.Lp = self.findChild(QLabel, "LP")
-        self.stream = self.findChild(QLabel, "stream")
-        self.capturebtn = self.findChild(QPushButton, "capture").clicked.connect(VideoThread.captureImg)
-        self.findChild(QPushButton, "close").clicked.connect(self.shutDown)
-        self.findChild(QPushButton, "PushStream").clicked.connect(self.streaming)
-        # self.capturebtn.hide()
-        self.stream.hide()
         self.endpoint.hide()
         self.Lp.hide()
         self.plate_img.hide()
@@ -139,49 +122,10 @@ class UI(QMainWindow):
         files = glob.glob(f'{path}/*')
         for file in files:
             os.remove(file)
-
-    def streaming(self):
-        # self.capturebtn.show()
-        self.stream.show()
-        self.thread = VideoThread()
-        # connect its signal to the update_image slot
-        self.thread.change_pixmap_signal.connect(self.update_image)
-        # start the thread
-        self.thread.start()
-
-    def shutDown(self):
-        self.stream.hide()
-        # self.capturebtn.hide()
-
-    def closeEvent(self, event):
-        self.thread.stop()
-        event.accept()
-
-    @pyqtSlot(np.ndarray)
-    def update_image(self, cv_img):
-        """Updates the image_label with a new opencv image"""
-        qt_img = self.convert_cv_qt(cv_img)
-        self.stream.setPixmap(qt_img)
-
-    def convert_cv_qt(self, cv_img):
-        """Convert from an opencv image to QPixmap"""
-        rgb_image = cv.cvtColor(cv_img, cv.COLOR_BGR2RGB)
-        h, w, ch = rgb_image.shape
-        bytes_per_line = ch * w
-        convert_to_Qt_format = QtGui.QImage(rgb_image.data, w, h, bytes_per_line, QtGui.QImage.Format_RGB888)
-        p = convert_to_Qt_format.scaled(531, 331, Qt.KeepAspectRatio)
-        return QPixmap.fromImage(p)
-
     def clean(self):
         for label, text in zip(self.segmented_chars, self.textbox_values):
             label.clear()
             text.setText("0")
-
-    # def create_directories(self):
-    #    output_path = self.output_path.toPlainText()
-    #    for i in range(1,27):
-    #        if not os.path.exists(output_path+f"/{i}"):
-    #            os.mkdir(output_path+f"/{i}")
 
     def saveImg(self):
         print("Saved")
@@ -234,45 +178,6 @@ class UI(QMainWindow):
         btn_pushed = True
         self.to_be_saved = {}
         self.clean()
-
-
-class VideoThread(QThread):
-    change_pixmap_signal = pyqtSignal(np.ndarray)
-
-    def __init__(self):
-        super().__init__()
-        self._run_flag = True
-        # self.frame = 0
-
-    def run(self):
-        # capture from web-camera
-        capture = cv.VideoCapture(0)
-        while self._run_flag:
-            global frame
-            ret, frame = capture.read()
-            if ret:
-                self.change_pixmap_signal.emit(frame)
-
-            # if cv.waitKey(1) == ord('q'):
-            #     cv.imwrite(path, frame)
-            #     break
-
-        # shut down capture system
-        capture.release()
-
-    def stop(self):
-
-        """Sets run flag to False and waits for thread to finish"""
-        self._run_flag = False
-        self.wait()
-
-    def captureImg(self):
-        try:
-            # cv.imshow('demo', frame)
-            global frame
-            cv.imwrite(path, frame)
-        except Exception:
-            print("Errorr")
 
 
 # Main

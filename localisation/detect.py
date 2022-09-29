@@ -127,7 +127,7 @@ def crop_multiple(directory_path, detect_multiple=False, saved_model_loaded=Fals
     image_paths = []
     file_paths = os.listdir(directory_path)
     image_paths = [(os.path.join(directory_path, path)).replace(os.sep, '/') for path in file_paths if path.endswith(image_extensions)]
-    final_crop_paths = [detect_and_crop(image_path, saved_model_loaded, detect_multiple) for image_path in image_paths]
+    # final_crop_paths = [detect_and_crop(image_path, saved_model_loaded, detect_multiple) for image_path in image_paths]
     for image in image_paths:
         crop_path = detect_and_crop(image, saved_model_loaded, detect_multiple)
         if crop_path is not None:

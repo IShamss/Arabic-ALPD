@@ -176,8 +176,8 @@ box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
     </property>
     <property name="geometry">
      <rect>
-      <x>490</x>
-      <y>680</y>
+      <x>430</x>
+      <y>670</y>
       <width>161</width>
       <height>51</height>
      </rect>

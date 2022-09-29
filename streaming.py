@@ -10,8 +10,9 @@ from PyQt5.QtWidgets import QMainWindow, QPushButton, QLabel
 # from detect import crop_one
 sys.path.insert(0, './localisation')
 path = './localisation/data/images/1.png'
+url = "http://192.168.20.51:8080/video"
 from localisation import detect
-from NewSegmentation.segment import segmentChars
+from segmentation.segmentation import segmentCharacters
 from recognition.KNN import predictChars, classify_image_arrays
 from integeration.client import endPoint
 from localisation.core.functions import load_model
@@ -62,20 +63,18 @@ class UI(QMainWindow):
             for img, plate_path, box_path in zip(os.scandir(input_path), cropped_paths, os.scandir(green_paths)):
                 global btn_pushed
                 btn_pushed = False
-                # self.main_img.show()
                 self.green_img.show()
                 self.endpoint.show()
                 self.Lp.show()
                 self.plate_img.show()
                 self.Lp.setAlignment(QtCore.Qt.AlignCenter)
                 self.endpoint.setAlignment(QtCore.Qt.AlignCenter)
-                # self.main_img.setScaledContents(True)
-                # self.main_img.setPixmap(QtGui.QPixmap(img.path))
                 self.plate_img.setScaledContents(True)
                 self.plate_img.setPixmap(QtGui.QPixmap("./" + plate_path))
                 self.green_img.setScaledContents(True)
                 self.green_img.setPixmap(QtGui.QPixmap(box_path.path))
-                _, chars = segmentChars(plate_path)
+                # _, chars = segmentChars(plate_path)
+                chars = segmentCharacters(plate_path)
                 self.labels = predictChars(classify_image_arrays(chars))
                 self.findChild(QLabel, "LP").setText(self.labels)
                 chars2 = self.labels
@@ -113,6 +112,7 @@ class UI(QMainWindow):
         self.main_img.setAlignment(QtCore.Qt.AlignCenter)
         self.clean_directory("./green_boxes")
         self.clean_directory("./detections")
+        self.clean_directory("./outputs/1")
 
     def clean_directory(self, path):
         files = glob.glob(f'{path}/*')
@@ -156,12 +156,6 @@ class UI(QMainWindow):
             label.clear()
             text.setText("0")
 
-    # def create_directories(self):
-    #    output_path = self.output_path.toPlainText()
-    #    for i in range(1,27):
-    #        if not os.path.exists(output_path+f"/{i}"):
-    #            os.mkdir(output_path+f"/{i}")
-
     def saveImg(self):
         print("Saved")
         mappings = {
@@ -198,10 +192,8 @@ class UI(QMainWindow):
             if result.toPlainText() != "0":
                 directory_num = key_list[val_list.index(result.toPlainText())]
                 path = self.output_path.toPlainText() + f"/{directory_num}"
-                # img=np.array(img.pixmap().toImage())
                 image = ImageQt.fromqpixmap(img.pixmap())
                 image.save(f"{path}/{str(datetime.now())[-5:]}.jpg")
-                # cv2.imwrite(os.path.join(path,f"{datetime.now()}.jpg"),image)
 
         global btn_pushed
         btn_pushed = True
@@ -214,21 +206,16 @@ class VideoThread(QThread):
     def __init__(self):
         super().__init__()
         self._run_flag = True
-        # self.frame = 0
 
     def run(self):
         # capture from web-camera
         capture = cv.VideoCapture(0)
+        # capture = cv.VideoCapture(url)
         while self._run_flag:
             global frame
             ret, frame = capture.read()
             if ret:
                 self.change_pixmap_signal.emit(frame)
-
-            # if cv.waitKey(1) == ord('q'):
-            #     cv.imwrite(path, frame)
-            #     break
-
         # shut down capture system
         capture.release()
 
