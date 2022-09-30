@@ -377,6 +377,41 @@ padding:3px;</string>
      </rect>
     </property>
    </widget>
+   <widget class="QPushButton" name="incorrect">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>480</y>
+      <width>241</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius: 8px;
+font-size: 20px;
+background-color: #3093ed;
+color: black;
+border: 2px solid #3093ed;
+/*box-shadow: 55px 10px #888888;*/
+</string>
+    </property>
+    <property name="text">
+     <string>Incorrect Answer</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="incorrectNum">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>490</y>
+      <width>151</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
