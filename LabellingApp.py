@@ -2,7 +2,10 @@ import sys
 
 from PIL import Image, ImageQt
 from PyQt5 import QtWidgets, uic, QtGui, QtCore
-from PyQt5.QtWidgets import QMainWindow, QPushButton, QTextEdit, QLabel,QComboBox
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QMainWindow, QPushButton, QTextEdit, QLabel,QComboBox, QSplashScreen , QDialog
+import time
+from PyQt5.QtGui import QPixmap
 
 # from detect import crop_one
 sys.path.insert(0, './localisation')
@@ -21,7 +24,6 @@ class UI(QMainWindow):
     def __init__(self):
         super(UI, self).__init__()
         # Load Screen
-        self.saveModel = load_model()
         uic.loadUi('labellingapp2.ui', self)
         # Button
         self.findChild(QPushButton, "startButton").clicked.connect(self.Run)
@@ -72,7 +74,7 @@ class UI(QMainWindow):
             self.main_img.setText("Please Specify correct paths")
             return
         self.create_directories()
-        cropped_paths = detect.crop_multiple(input_path, False, self.saveModel)
+        cropped_paths = detect.crop_multiple(input_path, False, saveModel)
         for img, plate_path in zip(os.scandir(input_path), cropped_paths):
             global btn_pushed
             btn_pushed = False
@@ -146,10 +148,29 @@ class UI(QMainWindow):
         btn_pushed = True
         self.to_be_saved = {}
         self.clean()
+class SplashScreen(QSplashScreen):
+    def __init__(self):
+        super(QSplashScreen, self).__init__()
+        uic.loadUi("untitled.ui", self)
+        self.setWindowFlag(Qt.FramelessWindowHint)
+        pixmap = QPixmap("bg.png")
+        self.setPixmap(pixmap)
+        
+        self.show()
 
+
+    def progress(self):
+
+        for i in range(100):
+            time.sleep(0.02)
+            self.progressBar.setValue(i+1)
 
 # Main
 if __name__ == "__main__":
     application = QtWidgets.QApplication(sys.argv)
+    splash = SplashScreen()
+    saveModel = load_model()
+
+    splash.progress()
     currWindow = UI()
     sys.exit(application.exec_())

@@ -5,7 +5,8 @@ from PIL import Image, ImageQt
 from PyQt5 import QtWidgets, uic, QtGui, QtCore
 from PyQt5.QtCore import pyqtSignal, pyqtSlot, Qt, QThread
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QMainWindow, QPushButton, QLabel
+from PyQt5.QtWidgets import QMainWindow, QPushButton, QLabel, QSplashScreen
+import time
 
 # from detect import crop_one
 sys.path.insert(0, './localisation')
@@ -29,7 +30,6 @@ class UI(QMainWindow):
     def __init__(self):
         super(UI, self).__init__()
         # Load Screen
-        self.saveModel = load_model()
         self.clean_directory("./green_boxes")
         self.clean_directory("./detections")
         uic.loadUi('stream.ui', self)
@@ -58,7 +58,7 @@ class UI(QMainWindow):
     def Run(self):
         input_path = "./localisation/data/images"
         try:
-            cropped_paths = detect.crop_multiple(input_path, False, self.saveModel)
+            cropped_paths = detect.crop_multiple(input_path, False, saveModel)
             green_paths = "./green_boxes"
             for img, plate_path, box_path in zip(os.scandir(input_path), cropped_paths, os.scandir(green_paths)):
                 global btn_pushed
@@ -234,10 +234,29 @@ class VideoThread(QThread):
 
         except Exception:
             print("Errorr")
+class SplashScreen(QSplashScreen):
+    def __init__(self):
+        super(QSplashScreen, self).__init__()
+        uic.loadUi("untitled.ui", self)
+        self.setWindowFlag(Qt.FramelessWindowHint)
+        pixmap = QPixmap("bg.png")
+        self.setPixmap(pixmap)
+        
+        self.show()
 
+
+    def progress(self):
+
+        for i in range(100):
+            time.sleep(0.02)
+            self.progressBar.setValue(i+1)
 
 # Main
 if __name__ == "__main__":
     application = QtWidgets.QApplication(sys.argv)
+    splash = SplashScreen()
+    saveModel = load_model()
+
+    splash.progress()
     currWindow = UI()
     sys.exit(application.exec_())
