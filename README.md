@@ -32,7 +32,7 @@ This Python code simply applies the image processing function. To illustrate, im
 To install any python library easily, there are few steps than any user should follow:
   1. verify that you can access python in command line.            ![Python_Exit](https://media.github.ibm.com/user/408442/files/99629680-2eca-11ed-9793-75bf0e9cab88)
 
-  2. check that package you need is available on Pypi ( Python's library store), to be able to use the pip tool.
+  2. check that package you need is available on Pypi ( Python's library store) , to be able to use the pip tool.
   3. use the pip tool in the comand line to install any library you want. 
      syntax of pip tool: python -m pip install namelibrary
                          Replace namelibrary by what you want to install
