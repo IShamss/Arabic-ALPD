@@ -1,13 +1,12 @@
 import sys
+import time
 
 from PIL import Image, ImageQt
 from PyQt5 import QtWidgets, uic, QtGui, QtCore
-from PyQt5.QtWidgets import QMainWindow, QPushButton, QTextEdit, QLabel, QWidget, QLabel, QApplication, QSplashScreen , QDialog
-from PyQt5.uic import loadUi
-import time
-from PyQt5.QtCore import pyqtSignal, pyqtSlot, QThread, Qt, QTimer
-
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QMainWindow, QPushButton, QTextEdit, QLabel, QSplashScreen
+
 # from detect import crop_one
 sys.path.insert(0, './localisation')
 path = './localisation/data/images/1.png'
@@ -120,11 +119,13 @@ class UI(QMainWindow):
         self.main_img.setText("Enter a new input directory")
         self.clean_directory("./green_boxes")
         self.clean_directory("./detections")
+        self.clean_directory("./outputs")
 
     def clean_directory(self, path):
         files = glob.glob(f'{path}/*')
         for file in files:
             os.remove(file)
+
     def clean(self):
         for label, text in zip(self.segmented_chars, self.textbox_values):
             label.clear()
@@ -182,22 +183,23 @@ class UI(QMainWindow):
         self.to_be_saved = {}
         self.clean()
 
+
 class SplashScreen(QSplashScreen):
     def __init__(self):
         super(QSplashScreen, self).__init__()
-        uic.loadUi("untitled.ui", self)
+        uic.loadUi("loading.ui", self)
         self.setWindowFlag(Qt.FramelessWindowHint)
-        pixmap = QPixmap("bg.png")
+        pixmap = QPixmap("IIC.png")
         self.setPixmap(pixmap)
-        
+
         self.show()
 
-
     def progress(self):
-
         for i in range(100):
             time.sleep(0.02)
-            self.progressBar.setValue(i+1)
+            self.progressBar.setValue(i + 1)
+
+
 # Main
 if __name__ == "__main__":
     application = QtWidgets.QApplication(sys.argv)

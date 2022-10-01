@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>699</width>
-    <height>353</height>
+    <height>420</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,8 +16,8 @@
   <widget class="QProgressBar" name="progressBar">
    <property name="geometry">
     <rect>
-     <x>60</x>
-     <y>230</y>
+     <x>80</x>
+     <y>360</y>
      <width>411</width>
      <height>31</height>
     </rect>
@@ -34,7 +34,7 @@
 
 QProgressBar::chunk{
 	border-radius:10px;
-	background-color: #ce5698;
+	background-color: #137AC4;
 }</string>
    </property>
    <property name="value">
@@ -54,7 +54,7 @@ QProgressBar::chunk{
     <string notr="true">text-align:center;</string>
    </property>
    <property name="text">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:36pt; color:#ffffff;&quot;&gt;ALPD&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
  </widget>

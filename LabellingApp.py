@@ -1,11 +1,11 @@
 import sys
+import time
 
 from PIL import Image, ImageQt
 from PyQt5 import QtWidgets, uic, QtGui, QtCore
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QMainWindow, QPushButton, QTextEdit, QLabel,QComboBox, QSplashScreen , QDialog
-import time
 from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QMainWindow, QPushButton, QTextEdit, QLabel, QComboBox, QSplashScreen
 
 # from detect import crop_one
 sys.path.insert(0, './localisation')
@@ -151,9 +151,9 @@ class UI(QMainWindow):
 class SplashScreen(QSplashScreen):
     def __init__(self):
         super(QSplashScreen, self).__init__()
-        uic.loadUi("untitled.ui", self)
+        uic.loadUi("loading.ui", self)
         self.setWindowFlag(Qt.FramelessWindowHint)
-        pixmap = QPixmap("bg.png")
+        pixmap = QPixmap("IIC.png")
         self.setPixmap(pixmap)
         
         self.show()
