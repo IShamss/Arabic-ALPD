@@ -5,7 +5,7 @@ import cv2 as cv
 from PIL import Image, ImageQt
 from PyQt5 import QtWidgets, uic, QtGui, QtCore
 from PyQt5.QtCore import pyqtSignal, pyqtSlot, Qt, QThread
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtWidgets import QMainWindow, QPushButton, QLabel, QSplashScreen
 
 # from detect import crop_one
@@ -33,6 +33,8 @@ class UI(QMainWindow):
         self.clean_directory("./green_boxes")
         self.clean_directory("./detections")
         uic.loadUi('stream.ui', self)
+        # logo of window
+        self.setWindowIcon(QIcon('logo.ico'))
         self.plate_img = self.findChild(QLabel, "plateImg")
         self.green_img = self.findChild(QLabel, "greenImg")
         self.green_img.hide()

@@ -4,7 +4,7 @@ import time
 from PIL import Image, ImageQt
 from PyQt5 import QtWidgets, uic, QtGui, QtCore
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtWidgets import QMainWindow, QPushButton, QTextEdit, QLabel, QSplashScreen
 
 # from detect import crop_one
@@ -27,10 +27,12 @@ frame = 0
 class UI(QMainWindow):
     def __init__(self):
         super(UI, self).__init__()
-        # Load Screen
         self.clean_directory("./green_boxes")
         self.clean_directory("./detections")
+        # Load Screen
         uic.loadUi('frontapp.ui', self)
+        # logo of window
+        self.setWindowIcon(QIcon('logo.ico'))
         # Button
         self.findChild(QPushButton, "startButton").clicked.connect(self.Run)
         # Get Input from each field
