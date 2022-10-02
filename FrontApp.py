@@ -61,12 +61,6 @@ class UI(QMainWindow):
         # include prediction code here
         print("Clicked")
         input_path = self.input_path.toPlainText()
-        # output_path = self.output_path.toPlainText()
-        # loop through all images
-        # if (not os.path.exists(output_path)) or( not os.path.exists(input_path)):
-        #    self.main_img.setText("Please Specify correct paths")
-        #    return
-        # self.create_directories()
         cropped_paths = detect.crop_multiple(input_path, False, saveModel)
         green_paths = "./green_boxes"
         for img, plate_path, box_path in zip(os.scandir(input_path), cropped_paths, os.scandir(green_paths)):
