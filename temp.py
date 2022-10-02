@@ -11,7 +11,7 @@ from PyQt5.QtWidgets import QMainWindow, QPushButton, QLabel, QSplashScreen
 # from detect import crop_one
 sys.path.insert(0, './localisation')
 path = './localisation/data/images/1.png'
-url = "http://192.168.20.51:8080/video"
+url = "./localisation/data/videos/2.mp4"
 from localisation import detect
 from segmentation.segmentation import segmentCharacters
 from recognition.KNN import predictChars, classify_image_arrays
@@ -41,7 +41,7 @@ class UI(QMainWindow):
         self.endpoint = self.findChild(QLabel, "endpoint")
         self.Lp = self.findChild(QLabel, "LP")
         self.stream = self.findChild(QLabel, "streaming")
-        self.capturebtn = self.findChild(QPushButton, "capture").clicked.connect(VideoThread.captureImg)
+        # self.capturebtn = self.findChild(QPushButton, "capture").clicked.connect(VideoThread.captureImg)
         self.findChild(QPushButton, "capture").clicked.connect(self.Run)
         # self.findChild(QPushButton, "close").clicked.connect(self.shutDown)
         self.findChild(QPushButton, "PushStream").clicked.connect(self.streamingVideo)
@@ -50,11 +50,9 @@ class UI(QMainWindow):
         self.Lp.hide()
         self.plate_img.hide()
         self.segmented_chars = []
-        self.textbox_values = []
-        self.images_to_be_saved = []
         for i in range(1, 8):
             self.segmented_chars.append(self.findChild(QLabel, f"seg{i}"))
-        self.clean()
+        # self.clean()
         self.show()
 
     def Run(self):
@@ -106,14 +104,16 @@ class UI(QMainWindow):
         self.finish()
 
     def finish(self):
+        self.main_img.clear()
         self.plate_img.clear()
         self.green_img.clear()
         self.Lp.clear()
         self.endpoint.clear()
+        self.main_img.setAlignment(QtCore.Qt.AlignCenter)
         self.clean_directory("./green_boxes")
         self.clean_directory("./detections")
         self.clean_directory("./outputs/1")
-        self.clean_directory("./localisation/data/images")
+
 
     def clean_directory(self, path):
         files = glob.glob(f'{path}/*')
@@ -152,10 +152,10 @@ class UI(QMainWindow):
         p = convert_to_Qt_format.scaled(531, 331, Qt.KeepAspectRatio)
         return QPixmap.fromImage(p)
 
-    def clean(self):
-        for label, text in zip(self.segmented_chars, self.textbox_values):
-            label.clear()
-            text.setText("0")
+    # def clean(self):
+    #     for label, text in zip(self.segmented_chars, self.textbox_values):
+    #         label.clear()
+    #         text.setText("0")
 
     def saveImg(self):
         print("Saved")
@@ -198,7 +198,7 @@ class UI(QMainWindow):
 
         global btn_pushed
         btn_pushed = True
-        self.clean()
+        # self.clean()
 
 
 class VideoThread(QThread):
@@ -210,13 +210,15 @@ class VideoThread(QThread):
 
     def run(self):
         # capture from web-camera
-        capture = cv.VideoCapture(0)
-        # capture = cv.VideoCapture(url)
+        # capture = cv.VideoCapture(0)
+        capture = cv.VideoCapture(url)
         while self._run_flag:
             global frame
             ret, frame = capture.read()
             if ret:
                 self.change_pixmap_signal.emit(frame)
+            if cv.waitKey(20) & 0xFF == ord('q'):
+                break
         # shut down capture system
         capture.release()
 

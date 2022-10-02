@@ -185,7 +185,7 @@ class SplashScreen(QSplashScreen):
         super(QSplashScreen, self).__init__()
         uic.loadUi("loading.ui", self)
         self.setWindowFlag(Qt.FramelessWindowHint)
-        pixmap = QPixmap("IIC.png")
+        pixmap = QPixmap("IC.png")
         self.setPixmap(pixmap)
 
         self.show()
