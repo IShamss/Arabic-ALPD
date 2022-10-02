@@ -43,7 +43,7 @@ class UI(QMainWindow):
         self.stream = self.findChild(QLabel, "streaming")
         self.capturebtn = self.findChild(QPushButton, "capture").clicked.connect(VideoThread.captureImg)
         self.findChild(QPushButton, "capture").clicked.connect(self.Run)
-        self.findChild(QPushButton, "close").clicked.connect(self.shutDown)
+        # self.findChild(QPushButton, "close").clicked.connect(self.shutDown)
         self.findChild(QPushButton, "PushStream").clicked.connect(self.streamingVideo)
         self.stream.hide()
         self.endpoint.hide()
@@ -236,6 +236,8 @@ class VideoThread(QThread):
 
         except Exception:
             print("Errorr")
+
+
 class SplashScreen(QSplashScreen):
     def __init__(self):
         super(QSplashScreen, self).__init__()
@@ -243,15 +245,14 @@ class SplashScreen(QSplashScreen):
         self.setWindowFlag(Qt.FramelessWindowHint)
         pixmap = QPixmap("IIC.png")
         self.setPixmap(pixmap)
-        
+
         self.show()
 
-
     def progress(self):
-
         for i in range(100):
             time.sleep(0.02)
-            self.progressBar.setValue(i+1)
+            self.progressBar.setValue(i + 1)
+
 
 # Main
 if __name__ == "__main__":

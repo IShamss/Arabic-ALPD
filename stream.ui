@@ -129,7 +129,7 @@ border: 2px solid #86bcfa;
    <widget class="QPushButton" name="PushStream">
     <property name="geometry">
      <rect>
-      <x>670</x>
+      <x>420</x>
       <y>40</y>
       <width>161</width>
       <height>51</height>
@@ -146,28 +146,6 @@ box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
     </property>
     <property name="text">
      <string>Stream</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="close">
-    <property name="geometry">
-     <rect>
-      <x>140</x>
-      <y>40</y>
-      <width>161</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-radius: 8px;
-font-size: 20px;
-background-color: #3093ed;
-color: black;
-border: 2px solid #3093ed;
-box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-</string>
-    </property>
-    <property name="text">
-     <string>Close Stream</string>
     </property>
    </widget>
    <widget class="QPushButton" name="capture">
