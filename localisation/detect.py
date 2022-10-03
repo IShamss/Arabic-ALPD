@@ -75,7 +75,7 @@ def detect_and_crop(image_path, saved_model_loaded, detect_multiple):
     for bbox in bboxes:
         if bbox[0] != 0 and bbox[1] != 0 and bbox[2] != 0 and bbox[3] != 0:
             cv2.rectangle(original_image_clrs, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), (0, 255, 0),
-                          25)
+                          12)
 
     img_path = "./green_boxes"
     try:

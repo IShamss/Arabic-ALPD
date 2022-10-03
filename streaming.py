@@ -11,7 +11,8 @@ from PyQt5.QtWidgets import QMainWindow, QPushButton, QLabel, QSplashScreen
 # from detect import crop_one
 sys.path.insert(0, './localisation')
 path = './localisation/data/images/1.png'
-url = "http://192.168.20.51:8080/video"
+# url = "http://192.168.20.51:8080/video"
+url = "http://9.246.91.33:8080/video"
 from localisation import detect
 from segmentation.segmentation import segmentCharacters
 from recognition.KNN import predictChars, classify_image_arrays
@@ -210,8 +211,8 @@ class VideoThread(QThread):
 
     def run(self):
         # capture from web-camera
-        capture = cv.VideoCapture(0)
-        # capture = cv.VideoCapture(url)
+        # capture = cv.VideoCapture(0)
+        capture = cv.VideoCapture(url)
         while self._run_flag:
             global frame
             ret, frame = capture.read()

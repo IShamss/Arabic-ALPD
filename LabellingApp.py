@@ -1,3 +1,4 @@
+import glob
 import sys
 import time
 
@@ -116,7 +117,14 @@ class UI(QMainWindow):
         self.main_img.setText("Enter a new input directory\nAccuracy : {:.2f} %".format((self.incorrect_count / self.image_count)*100))
         self.image_count=0
         self.incorrect_count=0
-
+        self.clean_directory("./green_boxes")
+        self.clean_directory("./detections")
+        self.clean_directory("./outputs")
+        self.clean_directory("./localisation/data/images")
+    def clean_directory(self, path):
+        files = glob.glob(f'{path}/*')
+        for file in files:
+            os.remove(file)
     def clean(self):
         for label, text in zip(self.segmented_chars, self.combo_values):
             # text.disconnect()
