@@ -2,7 +2,7 @@
 > Arabic License Plate Detector
 ## 📝 Table of Contents
 
-- [Description](#📙Description)
+- [Description](#-description)
 - [Localisation](#localisation)
 - [Segmentation](#segmentation)
 - [Recognition](#Recognition)
