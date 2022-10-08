@@ -2,20 +2,20 @@
 > Arabic License Plate Detector
 ## 📝 Table of Contents
 
-- [Description](#📙-description)
+- [Description](#📙Description)
 - [Localisation](#localisation)
 - [Segmentation](#segmentation)
 - [Recognition](#Recognition)
 - [Applications Demo](#📷applications-demo-hr)
     - [Front App](#front-app)
-    - [Labling Tool](#labeling-tool)
+    - [Labeling Tool](#labeling-tool)
     - [Streaming App](#streaming-app)
 
-- [Get started](#🏁-getting-started)
+- [Get started](#🏁getting-started)
   - [Prerequisite](#prerequisite)
   - [Installation](#installation)
-  - [Running](#running)
-- [Contributers](#contributors)
+  - [Running](#Running Applications)
+- [Contributors](#contributors)
 
 ##  📙 Description 
 
