@@ -6,7 +6,7 @@
 - [Localisation](#localisation)
 - [Segmentation](#segmentation)
 - [Recognition](#Recognition)
-- [Applications Demo](#📷applications-demo-hr)
+- [Applications Demo](#applications-demo)
     - [Front App](#front-app)
     - [Labeling Tool](#labeling-tool)
     - [Streaming App](#streaming-app)
