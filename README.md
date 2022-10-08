@@ -5,6 +5,7 @@
 - [Description](#📙-description)
 - [Localisation](#localisation)
 - [Segmentation](#segmentation)
+- [Recognition](#Recognition)
 - [Applications Demo](#📷applications-demo-hr)
     - [Front App](#front-app)
     - [Labling Tool](#labeling-tool)
@@ -26,7 +27,7 @@ This projects simulates a smart city's gate to facilitate residents and visitors
 <p align="center">
   <img src="./media/locate.png">
 
-## Segmentation <hr>
+## Segmentation<hr>
 
 <p align="center">
   <img src="./media/segment.jpg">
@@ -132,7 +133,7 @@ run Streaming.py
     <a href="https://github.ibm.com/Ziad-Khaled" target="_black">
     <img src="https://avatars.github.ibm.com/u/407341?s=460" width="150px;" alt="Ziad Khaled"/>
     <br />
-    <sub><b>Ahmed Ashraf</b></sub></a>
+    <sub><b>Ziad Khaled</b></sub></a>
     </td>
     
   </tr>
