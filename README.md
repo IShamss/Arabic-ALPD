@@ -22,23 +22,23 @@
 
 This projects simulates a smart city's gate to facilitate residents and visitors access using license plate detection. This process is done in three phases. First is localisation, where we get a cropped image of the plate only. Next is segmentation, Where each character is split apart from the other to aperient the character recognition phase. Finally, Character recognition, This phase results in the license plate's characters in the form of string in which you are granted access or not based upon.
 
-## Localisation<hr>
+## Localisation
 
 <p align="center">
   <img src="./media/locate.png">
 
-## Segmentation<hr>
+## Segmentation
 
 <p align="center">
   <img src="./media/segment.jpg">
 
-## Recognition<hr>
+## Recognition
 A KNN model is trained on recognizing Arabic Chracters and numbers using segmented characters images. The trained model takes segmented characters as input then outputs the plate's string.
 <p align="center">
-  <img src="./media/rec.PNG">
+  <img src="./media/rec.png">
   <br><br>
 
-## 📷Applications Demo <hr>
+## 📷Applications Demo
 - ## Front App
 The front app is used to simulate the smart city's gate, You must have a folder containing cars images with Egyptian license plates. Put the folder's path in Images Folder and the result will look like this. 
 <p align="center">
