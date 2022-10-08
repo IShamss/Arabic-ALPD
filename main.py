@@ -6,7 +6,7 @@ import time
 import cv2 as cv
 from matplotlib import pyplot as plt
 
-from NewSegmentation.segment import newOldSegmentation
+from alpd.segmentation.segment import newOldSegmentation
 from integeration.client import endPoint
 from recognition.KNN import classify_unlabelled_directory
 from recognition.KNN import predictChars

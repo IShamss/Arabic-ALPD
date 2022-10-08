@@ -11,7 +11,7 @@ from PyQt5.QtWidgets import QMainWindow, QPushButton, QTextEdit, QLabel, QComboB
 # from detect import crop_one
 sys.path.insert(0, './localisation')
 import detect as detect
-from NewSegmentation.segment import segmentChars
+from alpd.segmentation.segment import segmentChars
 from recognition.KNN import predictChars, classify_image_arrays
 from localisation.core.functions import load_model
 import os

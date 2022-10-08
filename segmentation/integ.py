@@ -1,10 +1,9 @@
 import os
-import cv2 as cv
 
 path = './output/'
 from matplotlib import pyplot as plt
 from oldSeg import Segmentation
-from newSeg import segmentChars
+from segment import segmentChars
 
 
 def printChars(chars, count):
