@@ -76,12 +76,22 @@ $ git clone https://github.com/IShamss/Arabic-ALPD.git
 
 2. **_Right click on the folder and open it with the IDE_**
 
-### Running 
+### Running Applications
 
-**_Running program_**
+**Front App**
 
 ```sh
-Run FrontApp.sh or Labeling.sh or Straming.sh
+run FrontApp.py
+```
+**Labeling Tool**
+
+```sh
+run LabelingApp.py
+```
+**Streaming App**
+
+```sh
+run Streaming.py
 ```
 
 # Contributors
@@ -120,7 +130,7 @@ Run FrontApp.sh or Labeling.sh or Straming.sh
     </td>
  <td align="center">
     <a href="https://github.ibm.com/Ziad-Khaled" target="_black">
-    <img src="https://avatars.github.ibm.com/u/407341?s=460" width="150px;" alt="Ahmed Ashraf"/>
+    <img src="https://avatars.github.ibm.com/u/407341?s=460" width="150px;" alt="Ziad Khaled"/>
     <br />
     <sub><b>Ahmed Ashraf</b></sub></a>
     </td>
