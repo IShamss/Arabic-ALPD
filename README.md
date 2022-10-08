@@ -80,21 +80,23 @@ $ git clone https://github.com/IShamss/Arabic-ALPD.git
 2. **_Right click on the folder and open it with the IDE_**
 
 ### Running Applications
-
+***Install Packages***
+```
+pip install requirments.txt
+```
 **Front App**
-
 ```sh
-run FrontApp.py
+python FrontApp.py
 ```
 **Labeling Tool**
 
 ```sh
-run LabelingApp.py
+python LabelingApp.py
 ```
 **Streaming App**
 
 ```sh
-run Streaming.py
+python Streaming.py
 ```
 
 # Contributors
@@ -102,38 +104,38 @@ run Streaming.py
 <table>
   <tr>
     <td align="center">
-    <a href="https://github.ibm.com/Omar-Ahmed1" target="_black">
-    <img src="https://avatars.github.ibm.com/u/368413?s=460" width="150px;" alt="Omar Reyad"/>
+    <a href="https://github.com/OmarRiad" target="_black">
+    <img src="https://avatars.githubusercontent.com/u/90624495?v=4" width="150px;" alt="Omar Reyad"/>
     <br />
     <sub><b>Omar Riad</b></sub></a>
     </td>
     <td align="center">
-    <a href="https://github.ibm.com/Yehia-Ragab" target="_black">
-    <img src="https://avatars.github.ibm.com/u/406749?s=460" width="150px;" alt="Yehia Ragab"/>
+    <a href="https://github.com/yehiaragab" target="_black">
+    <img src="https://avatars.githubusercontent.com/u/114439749?v=4" width="150px;" alt="Yehia Ragab"/>
     <br />
     <sub><b>Yehia Ragab</b></sub></a>
     </td>
     <td align="center">
-    <a href="https://github.ibm.com/Mohamed-Shams" target="_black">
-    <img src="https://avatars.github.ibm.com/u/407102?s=460" width="150px;" alt="Muhammed Shams"/>
+    <a href="https://github.com/IShamss" target="_black">
+    <img src="https://avatars.githubusercontent.com/u/46780496?v=4" width="150px;" alt="Muhammed Shams"/>
     <br />
     <sub><b>Muhammed Shams</b></sub></a>
     </td>
     <td align="center">
-    <a href="https://github.ibm.com/Ziad-Muhammed" target="_black">
-    <img src="https://avatars.github.ibm.com/u/406748?s=460&u=2c39d4781105767020864b2e7687300c9fb96dd4" width="150px;" alt="Ziad Sherif"/>
+    <a href="https://github.com/ZiadSheriif" target="_black">
+    <img src="https://avatars.githubusercontent.com/u/78238570?v=4" width="150px;" alt="Ziad Sherif"/>
     <br />
     <sub><b>Ziad Sherif</b></sub></a>
     </td>
     <td align="center">
-    <a href="https://github.ibm.com/Ahmed-Ashraf" target="_black">
-    <img src="https://avatars.github.ibm.com/u/407338?s=460" width="150px;" alt="Ahmed Ashraf"/>
+    <a href="https://github.com/AhmedAshraf82" target="_black">
+    <img src="https://avatars.githubusercontent.com/u/107231063?v=4" width="150px;" alt="Ahmed Ashraf"/>
     <br />
     <sub><b>Ahmed Ashraf</b></sub></a>
     </td>
  <td align="center">
-    <a href="https://github.ibm.com/Ziad-Khaled" target="_black">
-    <img src="https://avatars.github.ibm.com/u/407341?s=460" width="150px;" alt="Ziad Khaled"/>
+    <a href="https://github.com/ZiadKhaled5525" target="_black">
+    <img src="https://avatars.githubusercontent.com/u/112478318?v=4" width="150px; alt="Ziad Khaled"/>
     <br />
     <sub><b>Ziad Khaled</b></sub></a>
     </td>
