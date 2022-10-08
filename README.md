@@ -1,5 +1,7 @@
-# ALPD
-> Arabic License Plate Detector
+### Arabic License Plate Detector
+
+![view](media/gate.png)
+
 ## 📝 Table of Contents
 
 - [Description](#-description)
