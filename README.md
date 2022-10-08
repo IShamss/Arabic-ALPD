@@ -11,10 +11,10 @@
     - [Labeling Tool](#labeling-tool)
     - [Streaming App](#streaming-app)
 
-- [Get started](#🏁getting-started)
+- [Get started](#-getting-started)
   - [Prerequisite](#prerequisite)
   - [Installation](#installation)
-  - [Running](#Running Applications)
+  - [Running](#running-applications)
 - [Contributors](#contributors)
 
 ##  📙 Description 
