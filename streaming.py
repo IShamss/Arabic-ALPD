@@ -35,7 +35,7 @@ class UI(QMainWindow):
         self.clean_directory("./detections")
         uic.loadUi('stream.ui', self)
         # logo of window
-        self.setWindowIcon(QIcon('logo.ico'))
+        self.setWindowIcon(QIcon('media/logo.ico'))
         self.plate_img = self.findChild(QLabel, "plateImg")
         self.green_img = self.findChild(QLabel, "greenImg")
         self.green_img.hide()
@@ -243,7 +243,7 @@ class SplashScreen(QSplashScreen):
         super(QSplashScreen, self).__init__()
         uic.loadUi("loading.ui", self)
         self.setWindowFlag(Qt.FramelessWindowHint)
-        pixmap = QPixmap("IC.png")
+        pixmap = QPixmap("media/IC.png")
         self.setPixmap(pixmap)
 
         self.show()

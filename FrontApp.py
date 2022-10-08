@@ -13,7 +13,6 @@ path = './localisation/data/images/1.png'
 import localisation.detect as detect
 from NewSegmentation.segment import segmentChars
 from recognition.KNN import predictChars, classify_image_arrays
-from integeration.client import endPoint
 from localisation.core.functions import load_model
 import os
 import numpy as np
@@ -32,7 +31,7 @@ class UI(QMainWindow):
         # Load Screen
         uic.loadUi('frontapp.ui', self)
         # logo of window
-        self.setWindowIcon(QIcon('logo.ico'))
+        self.setWindowIcon(QIcon('media/logo.ico'))
         # Button
         self.findChild(QPushButton, "startButton").clicked.connect(self.Run)
         # Get Input from each field
@@ -100,7 +99,7 @@ class UI(QMainWindow):
                     self.textbox_values[idx].setText(self.labels[idx])
                 except Exception:
                     continue
-            self.findChild(QLabel, "endpoint").setText(endPoint(chars2))
+            self.findChild(QLabel, "endpoint").setText("Access Denied!")
             while (not btn_pushed):
                 QtCore.QCoreApplication.processEvents()
         self.finish()
@@ -185,7 +184,7 @@ class SplashScreen(QSplashScreen):
         super(QSplashScreen, self).__init__()
         uic.loadUi("loading.ui", self)
         self.setWindowFlag(Qt.FramelessWindowHint)
-        pixmap = QPixmap("IC.png")
+        pixmap = QPixmap("media/IC.png")
         self.setPixmap(pixmap)
 
         self.show()

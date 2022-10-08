@@ -11,11 +11,10 @@ from PyQt5.QtWidgets import QMainWindow, QPushButton, QLabel, QSplashScreen
 # from detect import crop_one
 sys.path.insert(0, './localisation')
 path = './localisation/data/images/1.png'
-url = "./localisation/data/videos/2.mp4"
+url = "./localisation/data/videos/wp2.mov"
 from localisation import detect
 from segmentation.segmentation import segmentCharacters
 from recognition.KNN import predictChars, classify_image_arrays
-from integeration.client import endPoint
 from localisation.core.functions import load_model
 import os
 import numpy as np
@@ -32,16 +31,16 @@ class UI(QMainWindow):
         # Load Screen
         self.clean_directory("./green_boxes")
         self.clean_directory("./detections")
-        uic.loadUi('stream.ui', self)
+        uic.loadUi('temp.ui', self)
         # logo of window
-        self.setWindowIcon(QIcon('logo.ico'))
+        self.setWindowIcon(QIcon('media/logo.ico'))
         self.plate_img = self.findChild(QLabel, "plateImg")
         self.green_img = self.findChild(QLabel, "greenImg")
         self.green_img.hide()
         self.endpoint = self.findChild(QLabel, "endpoint")
         self.Lp = self.findChild(QLabel, "LP")
         self.stream = self.findChild(QLabel, "streaming")
-        # self.capturebtn = self.findChild(QPushButton, "capture").clicked.connect(VideoThread.captureImg)
+        self.capturebtn = self.findChild(QPushButton, "capture").clicked.connect(VideoThread.captureImg)
         self.findChild(QPushButton, "capture").clicked.connect(self.Run)
         # self.findChild(QPushButton, "close").clicked.connect(self.shutDown)
         self.findChild(QPushButton, "PushStream").clicked.connect(self.streamingVideo)
@@ -96,7 +95,7 @@ class UI(QMainWindow):
                         self.textbox_values[idx].setText(self.labels[idx])
                     except Exception:
                         continue
-                self.findChild(QLabel, "endpoint").setText(endPoint(chars2))
+                self.findChild(QLabel, "endpoint").setText("Access granted!")
                 while (not btn_pushed):
                     QtCore.QCoreApplication.processEvents()
         except Exception:
@@ -104,16 +103,14 @@ class UI(QMainWindow):
         self.finish()
 
     def finish(self):
-        self.main_img.clear()
         self.plate_img.clear()
         self.green_img.clear()
         self.Lp.clear()
         self.endpoint.clear()
-        self.main_img.setAlignment(QtCore.Qt.AlignCenter)
         self.clean_directory("./green_boxes")
         self.clean_directory("./detections")
         self.clean_directory("./outputs/1")
-
+        self.clean_directory("./localisation/data/images")
 
     def clean_directory(self, path):
         files = glob.glob(f'{path}/*')
@@ -244,7 +241,7 @@ class SplashScreen(QSplashScreen):
         super(QSplashScreen, self).__init__()
         uic.loadUi("loading.ui", self)
         self.setWindowFlag(Qt.FramelessWindowHint)
-        pixmap = QPixmap("IC.png")
+        pixmap = QPixmap("media/IC.png")
         self.setPixmap(pixmap)
 
         self.show()

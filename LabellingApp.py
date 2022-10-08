@@ -27,7 +27,7 @@ class UI(QMainWindow):
         # Load Screen
         uic.loadUi('labellingapp2.ui', self)
         # logo of window
-        self.setWindowIcon(QIcon('logo.ico'))
+        self.setWindowIcon(QIcon('media/logo.ico'))
         # Button
         self.findChild(QPushButton, "startButton").clicked.connect(self.Run)
         # Get Input from each field
@@ -163,7 +163,7 @@ class SplashScreen(QSplashScreen):
         super(QSplashScreen, self).__init__()
         uic.loadUi("loading.ui", self)
         self.setWindowFlag(Qt.FramelessWindowHint)
-        pixmap = QPixmap("IC.png")
+        pixmap = QPixmap("media/IC.png")
         self.setPixmap(pixmap)
         
         self.show()
