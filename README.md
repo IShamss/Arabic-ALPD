@@ -34,7 +34,7 @@ This projects simulates a smart city's gate to facilitate residents and visitors
 ## Recognition<hr>
 A KNN model is trained on recognizing Arabic Chracters and numbers using segmented characters images. The trained model takes segmented characters as input then outputs the plate's string.
 <p align="center">
-  <img src="./media/rec.png">
+  <img src="./media/rec.PNG">
   <br><br>
 
 ## 📷Applications Demo <hr>
@@ -92,11 +92,11 @@ Run FrontApp.sh or Labeling.sh or Straming.sh
     <a href="https://github.ibm.com/Omar-Ahmed1" target="_black">
     <img src="https://avatars.github.ibm.com/u/368413?s=460" width="150px;" alt="Omar Reyad"/>
     <br />
-    <sub><b></b></sub></a>
+    <sub><b>Omar Riad</b></sub></a>
     </td>
     <td align="center">
     <a href="https://github.ibm.com/Yehia-Ragab" target="_black">
-    <img src="" width="150px;" alt=""/>
+    <img src="https://avatars.github.ibm.com/u/406749?s=460" width="150px;" alt="Yehia Ragab"/>
     <br />
     <sub><b>Yehia Ragab</b></sub></a>
     </td>
