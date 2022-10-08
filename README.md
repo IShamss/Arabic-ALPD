@@ -35,7 +35,7 @@ This projects simulates a smart city's gate to facilitate residents and visitors
 ## Recognition
 A KNN model is trained on recognizing Arabic Chracters and numbers using segmented characters images. The trained model takes segmented characters as input then outputs the plate's string.
 <p align="center">
-  <img src="./media/rec.png">
+  <img src="./media/rec.PNG">
   <br><br>
 
 ## 📷Applications Demo
