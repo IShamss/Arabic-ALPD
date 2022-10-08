@@ -145,7 +145,7 @@ python Streaming.py
 
 # License
 
-> This software is licensed under MIT License, See [License]() for more information @OmarRiad.
+> This software is licensed under MIT License, See [License](https://github.com/IShamss/Arabic-ALPD/blob/main/LICENCE) for more information @OmarRiad.
 
 
 
